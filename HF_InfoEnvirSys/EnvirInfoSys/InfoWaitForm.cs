@@ -157,6 +157,7 @@ namespace EnvirInfoSys
 						WorkPath + "picture\\" + tmpiffm.Node_GUID + "\\",
                         dataTable.Rows[i]["PFNAME"].ToString()
                     };
+
 					pichelper.DownloadPic(str + dataTable.Rows[i]["PFNAME"].ToString(), parameter, Text);
 				}
 			}
