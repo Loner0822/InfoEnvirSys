@@ -508,6 +508,8 @@ namespace EnvirInfoSys
 			dockPanel1.Width = width;
 			MapPath = FileReader.inip.ReadString("Individuation", "mappath", "");
 			MapPath = MapPath.Replace("\0", "");
+            if (MapPath == "")
+                MapPath = WorkPath + "googlemap";
 			FileReader.inip = new IniOperator(WorkPath + "SyncInfo.ini");
 			string text = FileReader.inip.ReadString("YUNLogin", "host", "");
 			FileReader.inip = new IniOperator(WorkPath + "Loginconfig.ini");
@@ -669,10 +671,12 @@ namespace EnvirInfoSys
 			dataTable = FileReader.often_ahp.ExecuteDataTable(sql, (OleDbParameter[])null);
 			for (int j = 0; j < dataTable.Rows.Count; j++)
 			{
-				BarButtonItem barButtonItem = new BarButtonItem();
-				barButtonItem.Caption = dataTable.Rows[j]["FLNAME"].ToString();
-				barButtonItem.Tag = dataTable.Rows[j]["PGUID"].ToString();
-				barButtonItem.ItemClick += MenuStripItem_Click;
+                BarButtonItem barButtonItem = new BarButtonItem
+                {
+                    Caption = dataTable.Rows[j]["FLNAME"].ToString(),
+                    Tag = dataTable.Rows[j]["PGUID"].ToString()
+                };
+                barButtonItem.ItemClick += MenuStripItem_Click;
 				bar2.InsertItem(bar2.ItemLinks[0], barButtonItem);
 			}
 			radioButton1.Checked = true;

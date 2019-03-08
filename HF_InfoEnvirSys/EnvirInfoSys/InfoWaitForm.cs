@@ -136,7 +136,10 @@ namespace EnvirInfoSys
 				XtraMessageBox.Show("请查看左下角网络连接状况");
 				SendMessage("", 7777, Text);
 			}
-			if (TestServerConnection(NetConnect.ip, int.Parse(NetConnect.port), 500))
+            FileReader.once_ahp = new AccessHelper(WorkPath + "data\\mapdata.accdb", "zbxh2012base518");
+
+
+            if (TestServerConnection(NetConnect.ip, int.Parse(NetConnect.port), 500))
 			{
 				pichelper.ClearDir(url, new string[1]
 				{
@@ -157,7 +160,6 @@ namespace EnvirInfoSys
 						WorkPath + "picture\\" + tmpiffm.Node_GUID + "\\",
                         dataTable.Rows[i]["PFNAME"].ToString()
                     };
-
 					pichelper.DownloadPic(str + dataTable.Rows[i]["PFNAME"].ToString(), parameter, Text);
 				}
 			}

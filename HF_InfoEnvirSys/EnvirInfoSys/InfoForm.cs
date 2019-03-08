@@ -219,7 +219,7 @@ namespace EnvirInfoSys
 		{
 			string text = Show_DB[propguid];
 			AccessHelper accessHelper = null;
-			accessHelper = ((text == "H0001Z000K00") ? ahp2 : ((!(text == "H0001Z000K01")) ? ahp4 : ahp3));
+			accessHelper = (text == "H0001Z000K00") ? ahp2 : ((!(text == "H0001Z000K01")) ? ahp4 : ahp3);
 			string text2 = Icon_GUID + "_" + propguid;
 			DataTable dataTable;
 			string sql;
