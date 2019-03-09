@@ -27,6 +27,9 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>256.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Forms">
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Windows.Forms\v4.0_4.0.0.0__b77a5c561934e089\System.Windows.Forms.dll</HintPath>
@@ -85,6 +88,9 @@
   <ItemGroup>
     <EmbeddedResource Include="PublishSys\MapForm.resx" />
     <EmbeddedResource Include="PublishSys\PubForm.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="256.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

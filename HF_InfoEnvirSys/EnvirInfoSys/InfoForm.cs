@@ -82,7 +82,7 @@ namespace EnvirInfoSys
 
 		private DocDocumentViewer documentviewer = new DocDocumentViewer();
 
-		private InfoWaitForm waitform = new InfoWaitForm();
+		private InfoWaitForm waitform = null;
 
 		private IContainer components = null;
 
@@ -375,16 +375,18 @@ namespace EnvirInfoSys
 
 		private Dictionary<string, string> Get_dw(string propguid)
 		{
-			Dictionary<string, string> dictionary = new Dictionary<string, string>();
-			dictionary.Add("danwei", "");
-			dictionary.Add("afterdecpoint", "");
-			dictionary.Add("upper", "");
-			dictionary.Add("limit", "");
-			dictionary.Add("defvalue", "");
-			Dictionary<string, string> dictionary2 = dictionary;
+            Dictionary<string, string> dictionary = new Dictionary<string, string>
+            {
+                { "danwei", "" },
+                { "afterdecpoint", "" },
+                { "upper", "" },
+                { "limit", "" },
+                { "defvalue", "" }
+            };
+            Dictionary<string, string> dictionary2 = dictionary;
 			string text = Show_DB[propguid];
 			AccessHelper accessHelper = null;
-			accessHelper = ((text == "H0001Z000K00") ? ahp2 : ((!(text == "H0001Z000K01")) ? ahp4 : ahp3));
+			accessHelper = (text == "H0001Z000K00") ? ahp2 : ((!(text == "H0001Z000K01")) ? ahp4 : ahp3);
 			string text2 = Icon_GUID + "_" + propguid;
 			string sql;
 			DataTable dataTable;
@@ -638,12 +640,13 @@ namespace EnvirInfoSys
 				webBrowser1.Visible = false;
 				documentviewer.Visible = false;
 				listView1.Dock = DockStyle.Fill;
+                waitform = new InfoWaitForm();
 				waitform.StartPosition = FormStartPosition.CenterParent;
 				waitform.ShowDialog(this);
-				if (listView1.Items.Count <= 0)
+				/*if (listView1.Items.Count <= 0)
 				{
 					XtraMessageBox.Show("暂无图片");
-				}
+				}*/
 				break;
 			}
 		}

@@ -7,6 +7,7 @@ using System.Data.OleDb;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using System.Windows.Forms;
 using System.Xml;
@@ -340,13 +341,21 @@ namespace PublishSys
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			TreeNode selectedNode = treeView1.SelectedNode;
+            TreeNode selectedNode = treeView1.SelectedNode;
+            if (selectedNode == null)
+                return;
 			inip = new IniOperator(WorkPath + "Publish\\RegInfo.ini");
 			if (MessageBox.Show("即将发布《" + selectedNode.Text + "区域经济大数据平台" + textBox1.Text + "》", "提示", MessageBoxButtons.OKCancel) != DialogResult.OK)
 			{
 				return;
 			}
-			inip.WriteString("Public", "UnitName", selectedNode.Text);
+
+            string levellist = Get_Level_List(selectedNode.Tag.ToString());
+            Process process = Process.Start(WorkPath + "Publish\\DownOrgMapByBorder.exe", selectedNode.Tag.ToString() + " " + levellist + " 1");// 单位guid，级别逗号隔开，1 删除下载，0 不删就下
+            process.WaitForExit();
+
+
+            inip.WriteString("Public", "UnitName", selectedNode.Text);
 			inip.WriteString("Public", "UnitLevel", UnitID_Level[selectedNode.Tag.ToString()]);
 			inip.WriteString("Public", "UnitID", selectedNode.Tag.ToString());
 			string text = selectedNode.Tag.ToString();
@@ -446,7 +455,7 @@ namespace PublishSys
 					ahp.ExecuteSql(sql, (OleDbParameter[])null);
 				}
 				ahp.CloseConn();
-				Process process = Process.Start(WorkPath + "PackUp.exe");
+				process = Process.Start(WorkPath + "PackUp.exe");
 				process.WaitForExit();
 				if (process.ExitCode == -1)
 				{
@@ -477,7 +486,33 @@ namespace PublishSys
 			}
 		}
 
-		private bool TestServerConnection(string host, int port, int millisecondsTimeout)
+        private string Get_Level_List(string unitid)
+        {
+            string lvlist = "";
+            ahp = new AccessHelper(WorkPath + "Publish\\data\\ENVIRDYDATA_H0001Z000E00.mdb");
+            string sql = "select MAPLEVEL from MAPDUIYING_H0001Z000E00 where ISDELETE = 0 and UNITEID = '" + unitid + "'";
+            DataTable dt = ahp.ExecuteDataTable(sql);
+            ahp.CloseConn();
+            for (int i = 0; i < dt.Rows.Count; ++i)
+                lvlist += dt.Rows[i]["MAPLEVEL"].ToString() + ",";
+            List<string>tmp = new List<string>(lvlist.Split(','));
+            List<int> tmp_num = new List<int>();
+            for (int i = 0; i < tmp.Count; ++i)
+                if (tmp[i] != "")
+                    tmp_num.Add(int.Parse(tmp[i]));
+            tmp_num.Sort();
+            tmp_num = tmp_num.Distinct().ToList();
+
+            lvlist = "";
+            for (int i = 0; i < tmp_num.Count; ++i)
+            {
+                if (tmp_num[i] != 0)
+                    lvlist += tmp_num[i].ToString() + ",";
+            }
+            return lvlist.Substring(0, lvlist.Length - 1);
+        }
+
+        private bool TestServerConnection(string host, int port, int millisecondsTimeout)
 		{
 			using (TcpClient tcpClient = new TcpClient())
 			{

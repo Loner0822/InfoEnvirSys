@@ -524,13 +524,13 @@ namespace EnvirInfoSys
 			FileReader.inip.WriteString("login", "randid", text2);
 			FileReader.once_ahp.CloseConn();
 			ProgName = UnitName + AppName + "trans";
-			Process[] processesByName = Process.GetProcessesByName("TransMessage");
+			Process[] processesByName = Process.GetProcessesByName("TransMsg");
 			Process[] array = processesByName;
 			foreach (Process process2 in array)
 			{
 				process2.Kill();
 			}
-			//TransMsg = Process.Start(WorkPath + "TransMessage.exe");
+			TransMsg = Process.Start(WorkPath + "TransMsg.exe");
 			int width2 = TextRenderer.MeasureText("-", new Font("宋体", 6f)).Width;
 			int width3 = TextRenderer.MeasureText("管辖范围", new Font("宋体", 6f)).Width;
 			int num = (dockPanel1.Height - width3) / width2;
@@ -1837,7 +1837,7 @@ namespace EnvirInfoSys
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			Process[] processesByName = Process.GetProcessesByName("TransMessage");
+			Process[] processesByName = Process.GetProcessesByName("TransMsg");
 			Process[] array = processesByName;
 			foreach (Process process in array)
 			{
@@ -1854,7 +1854,7 @@ namespace EnvirInfoSys
 
 		private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			Process[] processesByName = Process.GetProcessesByName("TransMessage");
+			Process[] processesByName = Process.GetProcessesByName("TransMsg");
 			Process[] array = processesByName;
 			foreach (Process process in array)
 			{

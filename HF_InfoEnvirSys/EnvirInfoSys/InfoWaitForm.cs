@@ -7,7 +7,10 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -107,13 +110,29 @@ namespace EnvirInfoSys
 		{
 			using (TcpClient tcpClient = new TcpClient())
 			{
-				try
+                //tcpClient.Close();
+                try
 				{
-					IAsyncResult asyncResult = tcpClient.BeginConnect(host, port, null, null);
+                    IAsyncResult asyncResult = tcpClient.BeginConnect(host, port, null, null);
 					asyncResult.AsyncWaitHandle.WaitOne(millisecondsTimeout);
 					return tcpClient.Connected;
-				}
-				catch (Exception)
+                    /*Ping ping = new Ping();
+                    PingOptions poptions = new PingOptions
+                    {
+                        DontFragment = true
+                    };
+                    string data = string.Empty;
+                    byte[] buffer = Encoding.ASCII.GetBytes(data);
+                    //int timeout = 500;
+
+                    PingReply reply = ping.Send(IPAddress.Parse(host), millisecondsTimeout, buffer, poptions);
+                    if (reply.Status == IPStatus.Success)
+                        return true;
+                    else
+                        return false;*/
+
+                }
+                catch (Exception)
 				{
 					return false;
 				}
@@ -137,18 +156,34 @@ namespace EnvirInfoSys
 				SendMessage("", 7777, Text);
 			}
             FileReader.once_ahp = new AccessHelper(WorkPath + "data\\mapdata.accdb", "zbxh2012base518");
+            string rand_GUID = tmpiffm.Node_GUID;
+            if (NetConnect.state == "云服务")
+            {
+                string sql = "select PRANDTAB from RAND_ZSKOBJECT where ISDELETE = 0 and PGUID = '" + tmpiffm.Icon_GUID + "'";
+                DataTable dt = FileReader.once_ahp.ExecuteDataTable(sql);
+                if (dt.Rows.Count > 0)
+                {
+                    sql = "select PRAND from " + dt.Rows[0]["PRANDTAB"].ToString() + " where ISDELETE = 0 and UNITID = '" + tmpiffm.unitid + "' and PGUID = '" + tmpiffm.Node_GUID + "'";
+                    dt = FileReader.once_ahp.ExecuteDataTable(sql);
+                    if (dt.Rows.Count > 0)
+                    {
+                        rand_GUID = dt.Rows[0]["PRAND"].ToString();
+                    }
+                }
+                FileReader.once_ahp.CloseConn();
+            }
 
-
-            if (TestServerConnection(NetConnect.ip, int.Parse(NetConnect.port), 500))
+            if (NetConnect.state != "未连接")
 			{
 				pichelper.ClearDir(url, new string[1]
 				{
 					WorkPath + "picture\\" + tmpiffm.Node_GUID
 				});
 				SendMessage("正在从服务器下载照片...", 3333, Text);
+                
 				DataTable dataTable = pichelper.QueryData(url, new string[1]
 				{
-					"select PFNAME from M_ICONPHOTO_H0001Z000E00 where ISDELETE = 0 and UPGUID = '" + tmpiffm.Node_GUID + "' and TDATATYPE = '照片'"
+					"select PFNAME from M_ICONPHOTO_H0001Z000E00 where ISDELETE = 0 and UPGUID = '" + rand_GUID + "' and TDATATYPE = '照片'"
 				});
 				for (int i = 0; i < dataTable.Rows.Count; i++)
 				{
@@ -186,7 +221,11 @@ namespace EnvirInfoSys
 		private void InfoWaitForm_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			fThread.Abort();
-		}
+            while (fThread.ThreadState != System.Threading.ThreadState.Aborted)
+            {
+                Thread.Sleep(100);
+            }
+        }
 
 		protected override void Dispose(bool disposing)
 		{
