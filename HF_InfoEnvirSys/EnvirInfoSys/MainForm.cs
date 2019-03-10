@@ -717,20 +717,22 @@ namespace EnvirInfoSys
 			{
 				GUID_Icon[dataTable.Rows[i]["PGUID"].ToString()] = dataTable.Rows[i]["ICONGUID"].ToString();
 				GUID_Name[dataTable.Rows[i]["PGUID"].ToString()] = dataTable.Rows[i]["MAKRENAME"].ToString();
-				Dictionary<string, object> dictionary = new Dictionary<string, object>();
-				dictionary.Add("guid", dataTable.Rows[i]["PGUID"].ToString());
-				dictionary.Add("name", dataTable.Rows[i]["MAKRENAME"].ToString());
-				dictionary.Add("level", "-1");
-				dictionary.Add("canedit", dataTable.Rows[i]["UNITEID"].ToString() == UnitID.ToString());
-				dictionary.Add("type", dataTable.Rows[i]["MARKETYPE"].ToString());
-				dictionary.Add("lat", dataTable.Rows[i]["MARKELAT"].ToString());
-				dictionary.Add("lng", dataTable.Rows[i]["MARKELNG"].ToString());
-				string text = WorkPath + "ICONDER\\b_PNGICON\\" + dataTable.Rows[i]["ICONGUID"].ToString() + ".png";
-				text = text.Replace('\\', '/');
-				dictionary.Add("iconpath", text);
-				dictionary.Add("message", null);
-				dictionary.Add("topoint", null);
-				list.Add(dictionary);
+                string text = WorkPath + "ICONDER\\b_PNGICON\\" + dataTable.Rows[i]["ICONGUID"].ToString() + ".png";
+                text = text.Replace('\\', '/');
+                Dictionary<string, object> dictionary = new Dictionary<string, object>
+                {
+                    { "guid", dataTable.Rows[i]["PGUID"].ToString() },
+                    { "name", dataTable.Rows[i]["MAKRENAME"].ToString() },
+                    { "level", "-1" },
+                    { "canedit", dataTable.Rows[i]["UNITEID"].ToString() == UnitID.ToString() },
+                    { "type", dataTable.Rows[i]["MARKETYPE"].ToString() },
+                    { "lat", dataTable.Rows[i]["MARKELAT"].ToString() },
+                    { "lng", dataTable.Rows[i]["MARKELNG"].ToString() },
+                    { "iconpath", text },
+                    { "message", null },
+                    { "topoint", null }
+                };
+                list.Add(dictionary);
 			}
 			cur_lst = list;
 		}
@@ -1199,11 +1201,13 @@ namespace EnvirInfoSys
 
 		private int DrawBorder()
 		{
-			int num = 0;
+            
+            int num = 0;
 			Dictionary<string, object> dictionary = new Dictionary<string, object>();
 			string dlabel = "fb66d40b-50fa-4d88-8156-c590328004cb";
-			//string text = "e62844cb-2839-4b49-853a-250e11ec1901";
-			dictionary["color"] = borData.Color;
+            mapHelper1.deleteMarker(dlabel);
+            //string text = "e62844cb-2839-4b49-853a-250e11ec1901";
+            dictionary["color"] = borData.Color;
 			dictionary["weight"] = 0;
 			dictionary["fillColor"] = "#C0C0C0";
 			dictionary["fillOpacity"] = 0.5;

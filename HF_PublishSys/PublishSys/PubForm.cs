@@ -305,7 +305,7 @@ namespace PublishSys
 
 		private void iP设置ToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			Process process = Process.Start(WorkPath + "Publish\\SetIP.exe");
+			Process process = Process.Start(WorkPath + "SetIP.exe");
 			process.WaitForExit();
 		}
 
