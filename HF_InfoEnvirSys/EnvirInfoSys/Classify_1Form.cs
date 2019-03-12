@@ -306,12 +306,14 @@ namespace EnvirInfoSys
 				{
 					xtraTabControl1.TabPages.Add(text);
 					num = xtraTabControl1.TabPages.Count - 1;
-					FlowLayoutPanel flp = new FlowLayoutPanel();
-					flp.Dock = DockStyle.Fill;
-					flp.FlowDirection = FlowDirection.LeftToRight;
-					flp.WrapContents = true;
-					flp.AutoScroll = true;
-					flp.MouseDown += flowLayoutPanel_MouseDown;
+                    FlowLayoutPanel flp = new FlowLayoutPanel
+                    {
+                        Dock = DockStyle.Fill,
+                        FlowDirection = FlowDirection.LeftToRight,
+                        WrapContents = true,
+                        AutoScroll = true
+                    };
+                    flp.MouseDown += flowLayoutPanel_MouseDown;
 					Add_Icon(flp, pguid, database);
 					xtraTabControl1.TabPages[num].Name = text;
 					xtraTabControl1.TabPages[num].BackColor = SystemColors.Control;
@@ -1153,6 +1155,7 @@ namespace EnvirInfoSys
             this.barButtonItem6.Caption = "管辖分类";
             this.barButtonItem6.Id = 0;
             this.barButtonItem6.Name = "barButtonItem6";
+            this.barButtonItem6.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem6_ItemClick);
             // 
             // barButtonItem7
             // 
@@ -1256,5 +1259,10 @@ namespace EnvirInfoSys
             this.PerformLayout();
 
 		}
-	}
+
+        private void barButtonItem6_ItemClick(object sender, ItemClickEventArgs e)
+        {
+
+        }
+    }
 }

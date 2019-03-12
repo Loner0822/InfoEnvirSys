@@ -353,7 +353,11 @@ namespace PublishSys
             string levellist = Get_Level_List(selectedNode.Tag.ToString());
             Process process = Process.Start(WorkPath + "Publish\\DownOrgMapByBorder.exe", selectedNode.Tag.ToString() + " " + levellist + " 1");// 单位guid，级别逗号隔开，1 删除下载，0 不删就下
             process.WaitForExit();
-
+            if (process.ExitCode == 1)
+            {
+                MessageBox.Show("地图获取失败!");
+                return;
+            }
 
             inip.WriteString("Public", "UnitName", selectedNode.Text);
 			inip.WriteString("Public", "UnitLevel", UnitID_Level[selectedNode.Tag.ToString()]);
