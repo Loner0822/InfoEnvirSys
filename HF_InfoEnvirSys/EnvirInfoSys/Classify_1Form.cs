@@ -720,6 +720,7 @@ namespace EnvirInfoSys
 		private void InitializeComponent()
 		{
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Classify_1Form));
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -1221,6 +1222,7 @@ namespace EnvirInfoSys
             this.Controls.Add(this.barDockControl4);
             this.Controls.Add(this.barDockControl2);
             this.Controls.Add(this.barDockControl1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Classify_1Form";
             this.Text = "管辖分类设置";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

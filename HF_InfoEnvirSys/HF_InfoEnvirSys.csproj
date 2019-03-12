@@ -194,18 +194,30 @@
     <EmbeddedResource Include="EnvirInfoSys\Classify_1Form.resx" />
     <EmbeddedResource Include="EnvirInfoSys\Classify_2Form.resx" />
     <EmbeddedResource Include="EnvirInfoSys\DataForm.resx" />
+    <EmbeddedResource Include="EnvirInfoSys\EditForm.resx">
+      <DependentUpon>EditForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EnvirInfoSys\exe.licenses" />
     <EmbeddedResource Include="EnvirInfoSys\HelpForm.resx" />
     <EmbeddedResource Include="EnvirInfoSys\InfoEditForm.resx" />
     <EmbeddedResource Include="EnvirInfoSys\InfoForm.resx" />
     <EmbeddedResource Include="EnvirInfoSys\InfoPicForm.resx" />
     <EmbeddedResource Include="EnvirInfoSys\InfoSetForm.resx" />
+    <EmbeddedResource Include="EnvirInfoSys\InfoWaitForm.resx">
+      <DependentUpon>InfoWaitForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EnvirInfoSys\LogForm.resx" />
     <EmbeddedResource Include="EnvirInfoSys\LoginForm.resx" />
     <EmbeddedResource Include="EnvirInfoSys\MainForm.resx" />
+    <EmbeddedResource Include="EnvirInfoSys\MapLevelForm.resx">
+      <DependentUpon>MapLevelForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EnvirInfoSys\MapSetForm.resx" />
     <EmbeddedResource Include="EnvirInfoSys\PasswordForm.resx" />
     <EmbeddedResource Include="EnvirInfoSys\RegForm.resx" />
+    <EmbeddedResource Include="EnvirInfoSys\WaitForm1.resx">
+      <DependentUpon>WaitForm1.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\licenses.licx" />
   </ItemGroup>
   <ItemGroup>

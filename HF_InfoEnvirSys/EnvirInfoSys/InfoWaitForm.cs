@@ -238,40 +238,52 @@ namespace EnvirInfoSys
 
 		private void InitializeComponent()
 		{
-			progressBarControl1 = new DevExpress.XtraEditors.ProgressBarControl();
-			progressPanel1 = new DevExpress.XtraWaitForm.ProgressPanel();
-			((System.ComponentModel.ISupportInitialize)progressBarControl1.Properties).BeginInit();
-			SuspendLayout();
-			progressBarControl1.Anchor = System.Windows.Forms.AnchorStyles.None;
-			progressBarControl1.Location = new System.Drawing.Point(12, 84);
-			progressBarControl1.Name = "progressBarControl1";
-			progressBarControl1.Size = new System.Drawing.Size(381, 27);
-			progressBarControl1.TabIndex = 0;
-			progressPanel1.Anchor = System.Windows.Forms.AnchorStyles.None;
-			progressPanel1.Appearance.BackColor = System.Drawing.Color.Transparent;
-			progressPanel1.Appearance.Options.UseBackColor = true;
-			progressPanel1.BarAnimationElementThickness = 2;
-			progressPanel1.Caption = "请稍后";
-			progressPanel1.Description = "加载中...";
-			progressPanel1.Location = new System.Drawing.Point(12, 12);
-			progressPanel1.Name = "progressPanel1";
-			progressPanel1.Size = new System.Drawing.Size(381, 66);
-			progressPanel1.TabIndex = 1;
-			progressPanel1.Text = "progressPanel1";
-			base.AutoScaleDimensions = new System.Drawing.SizeF(10f, 22f);
-			base.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			base.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			base.ClientSize = new System.Drawing.Size(405, 126);
-			base.ControlBox = false;
-			base.Controls.Add(progressPanel1);
-			base.Controls.Add(progressBarControl1);
-			base.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			base.Name = "InfoWaitForm";
-			Text = "下载照片";
-			base.FormClosed += new System.Windows.Forms.FormClosedEventHandler(InfoWaitForm_FormClosed);
-			base.Shown += new System.EventHandler(InfoWaitForm_Shown);
-			((System.ComponentModel.ISupportInitialize)progressBarControl1.Properties).EndInit();
-			ResumeLayout(performLayout: false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InfoWaitForm));
+            this.progressBarControl1 = new DevExpress.XtraEditors.ProgressBarControl();
+            this.progressPanel1 = new DevExpress.XtraWaitForm.ProgressPanel();
+            ((System.ComponentModel.ISupportInitialize)(this.progressBarControl1.Properties)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // progressBarControl1
+            // 
+            this.progressBarControl1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.progressBarControl1.Location = new System.Drawing.Point(12, 84);
+            this.progressBarControl1.Name = "progressBarControl1";
+            this.progressBarControl1.Size = new System.Drawing.Size(381, 27);
+            this.progressBarControl1.TabIndex = 0;
+            // 
+            // progressPanel1
+            // 
+            this.progressPanel1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.progressPanel1.Appearance.BackColor = System.Drawing.Color.Transparent;
+            this.progressPanel1.Appearance.Options.UseBackColor = true;
+            this.progressPanel1.BarAnimationElementThickness = 2;
+            this.progressPanel1.Caption = "请稍后";
+            this.progressPanel1.Description = "加载中...";
+            this.progressPanel1.Location = new System.Drawing.Point(12, 12);
+            this.progressPanel1.Name = "progressPanel1";
+            this.progressPanel1.Size = new System.Drawing.Size(381, 66);
+            this.progressPanel1.TabIndex = 1;
+            this.progressPanel1.Text = "progressPanel1";
+            // 
+            // InfoWaitForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(405, 126);
+            this.ControlBox = false;
+            this.Controls.Add(this.progressPanel1);
+            this.Controls.Add(this.progressBarControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "InfoWaitForm";
+            this.Text = "下载照片";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.InfoWaitForm_FormClosed);
+            this.Shown += new System.EventHandler(this.InfoWaitForm_Shown);
+            ((System.ComponentModel.ISupportInitialize)(this.progressBarControl1.Properties)).EndInit();
+            this.ResumeLayout(false);
+
 		}
 	}
 }
