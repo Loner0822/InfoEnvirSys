@@ -14,7 +14,10 @@ namespace PublishSys
 			Mutex mutex = new Mutex(initiallyOwned: true, "OnlyRunOneInstanceFB1", out createdNew);
 			if (createdNew)
 			{
-				Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                //Thread.CurrentThread.CurrentUICulture = new CultureInfo("zh-Hans");
+                //Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-Hans");
+
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 				Application.ThreadException += Application_ThreadException;
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(defaultValue: false);

@@ -256,7 +256,9 @@ namespace PublishSys
 
 		private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
 		{
+            button1.Enabled = true;
 			button2.Enabled = true;
+            button3.Enabled = true;
 		}
 
 		private void 下载地图ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -684,6 +686,7 @@ namespace PublishSys
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button3 = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -698,7 +701,6 @@ namespace PublishSys
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button3 = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -871,6 +873,18 @@ namespace PublishSys
             this.panel1.Size = new System.Drawing.Size(782, 145);
             this.panel1.TabIndex = 2;
             // 
+            // button3
+            // 
+            this.button3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.button3.Enabled = false;
+            this.button3.Location = new System.Drawing.Point(408, 60);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(100, 30);
+            this.button3.TabIndex = 9;
+            this.button3.Text = "下载地图";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // textBox3
             // 
             this.textBox3.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -947,6 +961,7 @@ namespace PublishSys
             // button1
             // 
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(599, 24);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 30);
@@ -1025,17 +1040,6 @@ namespace PublishSys
             this.删除ToolStripMenuItem.Size = new System.Drawing.Size(116, 28);
             this.删除ToolStripMenuItem.Text = "删除";
             this.删除ToolStripMenuItem.Click += new System.EventHandler(this.删除ToolStripMenuItem_Click);
-            // 
-            // button3
-            // 
-            this.button3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button3.Location = new System.Drawing.Point(408, 60);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(100, 30);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "下载地图";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // PubForm
             // 

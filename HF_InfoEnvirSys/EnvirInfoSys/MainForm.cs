@@ -134,7 +134,7 @@ namespace EnvirInfoSys
 
 		private RegForm regfm = new RegForm();
 
-		private Process TransMsg = null;
+		private Process TransMessage = null;
 
 		private System.Timers.Timer NetTimer = null;
 
@@ -512,7 +512,7 @@ namespace EnvirInfoSys
                 MapPath = WorkPath + "googlemap";
 			FileReader.inip = new IniOperator(WorkPath + "SyncInfo.ini");
 			string text = FileReader.inip.ReadString("YUNLogin", "host", "");
-			FileReader.inip = new IniOperator(WorkPath + "Loginconfig.ini");
+			/*FileReader.inip = new IniOperator(WorkPath + "Loginconfig.ini");
 			string text2 = FileReader.inip.ReadString("login", "perid", "");
 			FileReader.once_ahp = new AccessHelper(WorkPath + "data\\mapdata.accdb", "zbxh2012base518");
 			string sql = "select PERSONRAND from RAND_PERSONINFO where PERSONID = " + text2;
@@ -522,15 +522,15 @@ namespace EnvirInfoSys
 				text2 = dataTable.Rows[0]["PERSONRAND"].ToString();
 			}
 			FileReader.inip.WriteString("login", "randid", text2);
-			FileReader.once_ahp.CloseConn();
+			FileReader.once_ahp.CloseConn();*/
 			ProgName = UnitName + AppName + "trans";
-			Process[] processesByName = Process.GetProcessesByName("TransMsg");
+			Process[] processesByName = Process.GetProcessesByName("TransMessage");
 			Process[] array = processesByName;
 			foreach (Process process2 in array)
 			{
 				process2.Kill();
 			}
-			TransMsg = Process.Start(WorkPath + "TransMsg.exe");
+			TransMessage = Process.Start(WorkPath + "TransMessage.exe");
 			int width2 = TextRenderer.MeasureText("-", new Font("宋体", 6f)).Width;
 			int width3 = TextRenderer.MeasureText("管辖范围", new Font("宋体", 6f)).Width;
 			int num = (dockPanel1.Height - width3) / width2;
@@ -565,8 +565,8 @@ namespace EnvirInfoSys
 			UnitID = FileReader.inip.ReadString("Public", "UnitCounty", "-1");
 			UnitReal = FileReader.inip.ReadString("Public", "UnitID", "-1");
 			AccessHelper accessHelper = new AccessHelper(WorkPath + "data\\PASSWORD_H0001Z000E00.mdb");
-			sql = "select AUTHORITY from PASSWORD_H0001Z000E00 where ISDELETE = 0 and PWNAME = '管理员密码' and UNITID = '" + UnitID + "'";
-			dataTable = accessHelper.ExecuteDataTable(sql, (OleDbParameter[])null);
+			string sql = "select AUTHORITY from PASSWORD_H0001Z000E00 where ISDELETE = 0 and PWNAME = '管理员密码' and UNITID = '" + UnitID + "'";
+			DataTable dataTable = accessHelper.ExecuteDataTable(sql, (OleDbParameter[])null);
 			string text3 = "";
 			if (dataTable.Rows.Count > 0)
 			{
@@ -1841,7 +1841,7 @@ namespace EnvirInfoSys
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			Process[] processesByName = Process.GetProcessesByName("TransMsg");
+			Process[] processesByName = Process.GetProcessesByName("TransMessage");
 			Process[] array = processesByName;
 			foreach (Process process in array)
 			{
@@ -1858,7 +1858,7 @@ namespace EnvirInfoSys
 
 		private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			Process[] processesByName = Process.GetProcessesByName("TransMsg");
+			Process[] processesByName = Process.GetProcessesByName("TransMessage");
 			Process[] array = processesByName;
 			foreach (Process process in array)
 			{
