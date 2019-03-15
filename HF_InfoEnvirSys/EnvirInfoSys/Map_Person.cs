@@ -29,12 +29,6 @@ namespace EnvirInfoSys
 			set;
 		}
 
-		public int circle
-		{
-			get;
-			set;
-		}
-
 		public DateTime time
 		{
 			get;
@@ -52,5 +46,17 @@ namespace EnvirInfoSys
 			get;
 			set;
 		}
+
+        public bool vis
+        {
+            get;
+            set;
+        }
+
+        public string per_unit
+        {
+            get;
+            set;
+        }
 	}
 }

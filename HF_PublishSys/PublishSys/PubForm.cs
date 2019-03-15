@@ -529,13 +529,38 @@ namespace PublishSys
 
         private string Get_Level_List(string unitid)
         {
+            TreeNode pNode = treeView1.SelectedNode;
+            ahp = new AccessHelper(WorkPath + "Publish\\data\\PersonMange.mdb");
+            string sql = "select UPPGUID, ULEVEL from RG_单位注册 where ISDELETE = 0 and PGUID = '" + pNode.Tag.ToString() + "'";
+            DataTable dataTable = ahp.ExecuteDataTable(sql, (OleDbParameter[])null);
+            string tmp_str = "";
+            if (dataTable.Rows.Count > 0)
+            {
+                while (dataTable.Rows[0]["ULEVEL"].ToString() != "县")
+                {
+                    tmp_str = dataTable.Rows[0]["UPPGUID"].ToString();
+                    sql = "select UPPGUID, ULEVEL from RG_单位注册 where ISDELETE = 0 and PGUID = '" + tmp_str + "'";
+                    dataTable = ahp.ExecuteDataTable(sql, (OleDbParameter[])null);
+                    if (dataTable.Rows.Count <= 0)
+                    {
+                        MessageBox.Show("读取单位列表时出错!");
+                        return "";
+                    }
+                }
+                ahp.CloseConn();
+            }
             string lvlist = "";
             ahp = new AccessHelper(WorkPath + "Publish\\data\\ENVIRDYDATA_H0001Z000E00.mdb");
-            string sql = "select MAPLEVEL from MAPDUIYING_H0001Z000E00 where ISDELETE = 0 and UNITEID = '" + unitid + "'";
+            sql = "select MAPLEVEL, LEVELGUID from MAPDUIYING_H0001Z000E00 where ISDELETE = 0 and UNITEID = '" + tmp_str + "'";
             DataTable dt = ahp.ExecuteDataTable(sql);
             ahp.CloseConn();
+            ahp = new AccessHelper(WorkPath + "Publish\\data\\ENVIRDYDATA_H0001Z000E00.mdb");
             for (int i = 0; i < dt.Rows.Count; ++i)
+            {
+                
                 lvlist += dt.Rows[i]["MAPLEVEL"].ToString() + ",";
+            }
+            ahp.CloseConn();
             List<string>tmp = new List<string>(lvlist.Split(','));
             List<int> tmp_num = new List<int>();
             for (int i = 0; i < tmp.Count; ++i)
