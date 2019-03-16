@@ -470,7 +470,7 @@ namespace EnvirInfoSys
             {
                 str += "-";
             }
-            str += "图符列表";
+            str += "图例";
             for (int j = 0; j < num; j++)
             {
                 str += "-";
@@ -538,7 +538,13 @@ namespace EnvirInfoSys
 			{
 				process2.Kill();
 			}
-			TransMessage = Process.Start(WorkPath + "TransMessage.exe");
+            processesByName = Process.GetProcessesByName("VideoConn");
+            array = processesByName;
+            foreach (Process process2 in array)
+            {
+                process2.Kill();
+            }
+            TransMessage = Process.Start(WorkPath + "TransMessage.exe");
 			
 			Text = UnitName + AppName + VerNum;
 			FileReader.often_ahp = new AccessHelper(AccessPath);
@@ -1839,14 +1845,21 @@ namespace EnvirInfoSys
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			Process[] processesByName = Process.GetProcessesByName("TransMessage");
-			Process[] array = processesByName;
-			foreach (Process process in array)
-			{
-				process.Kill();
-				process.WaitForExit();
-			}
-			if (Permission)
+            Process[] processesByName = Process.GetProcessesByName("TransMessage");
+            Process[] array = processesByName;
+            foreach (Process process2 in array)
+            {
+                process2.Kill();
+                process2.WaitForExit();
+            }
+            processesByName = Process.GetProcessesByName("VideoConn");
+            array = processesByName;
+            foreach (Process process2 in array)
+            {
+                process2.Kill();
+                process2.WaitForExit();
+            }
+            if (Permission)
 			{
 				FileReader.inip = new IniOperator(WorkPath + "RegInfo.ini");
 				FileReader.inip.WriteString("Individuation", "skin", UserLookAndFeel.Default.ActiveSkinName);
@@ -1856,14 +1869,21 @@ namespace EnvirInfoSys
 
 		private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			Process[] processesByName = Process.GetProcessesByName("TransMessage");
-			Process[] array = processesByName;
-			foreach (Process process in array)
-			{
-				process.Kill();
-				process.WaitForExit();
-			}
-			FileReader.often_ahp.CloseConn();
+            Process[] processesByName = Process.GetProcessesByName("TransMessage");
+            Process[] array = processesByName;
+            foreach (Process process2 in array)
+            {
+                process2.Kill();
+                process2.WaitForExit();
+            }
+            processesByName = Process.GetProcessesByName("VideoConn");
+            array = processesByName;
+            foreach (Process process2 in array)
+            {
+                process2.Kill();
+                process2.WaitForExit();
+            }
+            FileReader.often_ahp.CloseConn();
 			FileReader.line_ahp.CloseConn();
 			FileReader.log_ahp.CloseConn();
 			FileReader.list_ahp.CloseConn();
@@ -2839,7 +2859,21 @@ namespace EnvirInfoSys
 
 		private void barButtonItem3_ItemClick(object sender, ItemClickEventArgs e)
 		{
-			if (!Permission)
+            Process[] processesByName = Process.GetProcessesByName("TransMessage");
+            Process[] array = processesByName;
+            foreach (Process process2 in array)
+            {
+                process2.Kill();
+                process2.WaitForExit();
+            }
+            processesByName = Process.GetProcessesByName("VideoConn");
+            array = processesByName;
+            foreach (Process process2 in array)
+            {
+                process2.Kill();
+                process2.WaitForExit();
+            }
+            if (!Permission)
 			{
 				Environment.Exit(0);
 				return;
@@ -3346,11 +3380,6 @@ namespace EnvirInfoSys
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.dockManager1 = new DevExpress.XtraBars.Docking.DockManager(this.components);
-            this.dockPanel2 = new DevExpress.XtraBars.Docking.DockPanel();
-            this.dockPanel2_Container = new DevExpress.XtraBars.Docking.ControlContainer();
-            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.pbMove = new System.Windows.Forms.PictureBox();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bar2 = new DevExpress.XtraBars.Bar();
@@ -3393,6 +3422,11 @@ namespace EnvirInfoSys
             this.dockPanel1 = new DevExpress.XtraBars.Docking.DockPanel();
             this.dockPanel1_Container = new DevExpress.XtraBars.Docking.ControlContainer();
             this.treeList1 = new DevExpress.XtraTreeList.TreeList();
+            this.dockPanel2 = new DevExpress.XtraBars.Docking.DockPanel();
+            this.dockPanel2_Container = new DevExpress.XtraBars.Docking.ControlContainer();
+            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.pbMove = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.mapHelper1 = new MapHelper.MapHelper();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
@@ -3403,15 +3437,15 @@ namespace EnvirInfoSys
             this.barButtonItem21 = new DevExpress.XtraBars.BarButtonItem();
             this.xtraFolderBrowserDialog1 = new DevExpress.XtraEditors.XtraFolderBrowserDialog(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dockManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            this.dockPanel1.SuspendLayout();
+            this.dockPanel1_Container.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.treeList1)).BeginInit();
             this.dockPanel2.SuspendLayout();
             this.dockPanel2_Container.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbMove)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
-            this.dockPanel1.SuspendLayout();
-            this.dockPanel1_Container.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.treeList1)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
@@ -3438,57 +3472,6 @@ namespace EnvirInfoSys
             "DevExpress.XtraBars.Navigation.TileNavPane",
             "DevExpress.XtraBars.TabFormControl",
             "DevExpress.XtraBars.FluentDesignSystem.FluentDesignFormControl"});
-            // 
-            // dockPanel2
-            // 
-            this.dockPanel2.Controls.Add(this.dockPanel2_Container);
-            this.dockPanel2.Dock = DevExpress.XtraBars.Docking.DockingStyle.Right;
-            this.dockPanel2.ID = new System.Guid("ffe5c6be-7291-4281-896f-71a6444f9312");
-            this.dockPanel2.Location = new System.Drawing.Point(1625, 64);
-            this.dockPanel2.Name = "dockPanel2";
-            this.dockPanel2.Options.ShowCloseButton = false;
-            this.dockPanel2.OriginalSize = new System.Drawing.Size(87, 200);
-            this.dockPanel2.SavedSizeFactor = 0D;
-            this.dockPanel2.Size = new System.Drawing.Size(87, 1003);
-            // 
-            // dockPanel2_Container
-            // 
-            this.dockPanel2_Container.Controls.Add(this.panelControl1);
-            this.dockPanel2_Container.Location = new System.Drawing.Point(9, 33);
-            this.dockPanel2_Container.Name = "dockPanel2_Container";
-            this.dockPanel2_Container.Size = new System.Drawing.Size(72, 964);
-            this.dockPanel2_Container.TabIndex = 0;
-            // 
-            // panelControl1
-            // 
-            this.panelControl1.Controls.Add(this.flowLayoutPanel1);
-            this.panelControl1.Controls.Add(this.pbMove);
-            this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl1.Location = new System.Drawing.Point(0, 0);
-            this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(72, 964);
-            this.panelControl1.TabIndex = 0;
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(2, 2);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(68, 960);
-            this.flowLayoutPanel1.TabIndex = 34;
-            // 
-            // pbMove
-            // 
-            this.pbMove.BackColor = System.Drawing.Color.Transparent;
-            this.pbMove.Location = new System.Drawing.Point(73, 487);
-            this.pbMove.Margin = new System.Windows.Forms.Padding(4);
-            this.pbMove.Name = "pbMove";
-            this.pbMove.Size = new System.Drawing.Size(39, 40);
-            this.pbMove.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbMove.TabIndex = 33;
-            this.pbMove.TabStop = false;
-            this.pbMove.Visible = false;
             // 
             // barManager1
             // 
@@ -3880,6 +3863,58 @@ namespace EnvirInfoSys
             this.treeList1.FocusedNodeChanged += new DevExpress.XtraTreeList.FocusedNodeChangedEventHandler(this.treeList1_FocusedNodeChanged);
             this.treeList1.CustomDrawNodeCell += new DevExpress.XtraTreeList.CustomDrawNodeCellEventHandler(this.treeList1_CustomDrawNodeCell);
             // 
+            // dockPanel2
+            // 
+            this.dockPanel2.Controls.Add(this.dockPanel2_Container);
+            this.dockPanel2.Dock = DevExpress.XtraBars.Docking.DockingStyle.Right;
+            this.dockPanel2.ID = new System.Guid("ffe5c6be-7291-4281-896f-71a6444f9312");
+            this.dockPanel2.Location = new System.Drawing.Point(1625, 64);
+            this.dockPanel2.Name = "dockPanel2";
+            this.dockPanel2.Options.ShowCloseButton = false;
+            this.dockPanel2.OriginalSize = new System.Drawing.Size(87, 200);
+            this.dockPanel2.SavedSizeFactor = 0D;
+            this.dockPanel2.Size = new System.Drawing.Size(87, 1003);
+            this.dockPanel2.Text = "图例";
+            // 
+            // dockPanel2_Container
+            // 
+            this.dockPanel2_Container.Controls.Add(this.panelControl1);
+            this.dockPanel2_Container.Location = new System.Drawing.Point(9, 33);
+            this.dockPanel2_Container.Name = "dockPanel2_Container";
+            this.dockPanel2_Container.Size = new System.Drawing.Size(72, 964);
+            this.dockPanel2_Container.TabIndex = 0;
+            // 
+            // panelControl1
+            // 
+            this.panelControl1.Controls.Add(this.flowLayoutPanel1);
+            this.panelControl1.Controls.Add(this.pbMove);
+            this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelControl1.Location = new System.Drawing.Point(0, 0);
+            this.panelControl1.Name = "panelControl1";
+            this.panelControl1.Size = new System.Drawing.Size(72, 964);
+            this.panelControl1.TabIndex = 0;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(2, 2);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(68, 960);
+            this.flowLayoutPanel1.TabIndex = 34;
+            // 
+            // pbMove
+            // 
+            this.pbMove.BackColor = System.Drawing.Color.Transparent;
+            this.pbMove.Location = new System.Drawing.Point(73, 487);
+            this.pbMove.Margin = new System.Windows.Forms.Padding(4);
+            this.pbMove.Name = "pbMove";
+            this.pbMove.Size = new System.Drawing.Size(39, 40);
+            this.pbMove.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbMove.TabIndex = 33;
+            this.pbMove.TabStop = false;
+            this.pbMove.Visible = false;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.mapHelper1);
@@ -3984,15 +4019,15 @@ namespace EnvirInfoSys
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.dockManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            this.dockPanel1.ResumeLayout(false);
+            this.dockPanel1_Container.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.treeList1)).EndInit();
             this.dockPanel2.ResumeLayout(false);
             this.dockPanel2_Container.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbMove)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
-            this.dockPanel1.ResumeLayout(false);
-            this.dockPanel1_Container.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.treeList1)).EndInit();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
