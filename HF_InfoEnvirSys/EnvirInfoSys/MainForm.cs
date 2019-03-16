@@ -495,7 +495,7 @@ namespace EnvirInfoSys
 			barStaticItem1.Border = BorderStyles.NoBorder;
 			barStaticItem2.Border = BorderStyles.NoBorder;
 			barStaticItem1.Caption = "正在连接到网络...";
-			NetTimer = new System.Timers.Timer(5000.0);
+			NetTimer = new System.Timers.Timer(1000.0);
 			NetTimer.Elapsed += NetTimer_Tick;
 			NetTimer.AutoReset = true;
 			NetTimer.Enabled = true;

@@ -643,10 +643,10 @@ namespace EnvirInfoSys
                 waitform = new InfoWaitForm();
 				waitform.StartPosition = FormStartPosition.CenterParent;
 				waitform.ShowDialog(this);
-				/*if (listView1.Items.Count <= 0)
+				if (listView1.Items.Count <= 0)
 				{
 					XtraMessageBox.Show("暂无图片");
-				}*/
+				}
 				break;
 			}
 		}
