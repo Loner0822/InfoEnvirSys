@@ -1,0 +1,12 @@
+[Login]
+ip=192.168.0.109
+port=190
+host=hlzf.org
+[YUNLogin]
+ip=60.6.254.186
+port=190
+host=hlzf.org
+[JULogin]
+ip=192.168.0.109
+port=190
+host=jingdex.org

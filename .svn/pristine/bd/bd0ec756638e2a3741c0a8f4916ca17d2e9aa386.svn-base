@@ -1,0 +1,10 @@
+[packup]
+my_app_name =区域经济大数据平台
+my_app_version =1.00.00
+my_app_publisher =蔡家桥镇
+my_app_exe_name =LoginForm.exe
+my_app_id ={{2bf2e11f-0b1e-48b6-b9cd-0fd37bb1820a}
+source_exe_path =D:\工作\环境信息化系统\InfoEnvirSys\HF_PublishSys\bin\Debug\Publish\EnvirInfoSys.exe
+source_path =D:\工作\环境信息化系统\InfoEnvirSys\HF_PublishSys\bin\Debug\Publish
+registry_subkey =区域经济大数据平台
+map_path=D:\MapDownload\googlemaps

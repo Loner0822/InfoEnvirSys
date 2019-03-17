@@ -1,0 +1,11 @@
+[Public]
+UnitLevel=乡
+UnitName=蔡家桥镇
+UnitID={DE934FB5-BB8A-4F3D-81A4-1663984F191C}
+AppName=区域经济大数据平台
+UnitCounty={43E8730A-73B0-4A7F-AA65-CF33E2BC4621}
+[版本号]
+VerNum=1.00.00
+[Individuation]
+skin=Office 2010 Blue
+listwidth=166
