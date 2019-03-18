@@ -2199,39 +2199,50 @@ namespace EnvirInfoSys
 
 		private void DrawLine(string markerguid)
 		{
-			double num = 0.0;
-			double num2 = 0.0;
-			Dictionary<string, object> dictionary = new Dictionary<string, object>();
-			string sql = "select LINETYPE, LINEWIDTH, LINECOLOR, LINEOPACITY from ENVIRLINE_H0001Z000E00 where ISDELETE = 0 and UPGUID = '" + markerguid + "'";
-			DataTable dataTable = FileReader.often_ahp.ExecuteDataTable(sql, (OleDbParameter[])null);
-			if (dataTable.Rows.Count > 0)
-			{
-				dictionary["type"] = dataTable.Rows[0]["LINETYPE"].ToString();
-				dictionary["width"] = int.Parse(dataTable.Rows[0]["LINEWIDTH"].ToString());
-				dictionary["color"] = dataTable.Rows[0]["LINECOLOR"].ToString();
-				dictionary["opacity"] = double.Parse(dataTable.Rows[0]["LINEOPACITY"].ToString());
-				dictionary["arrow"] = false;
-				sql = "select MARKELAT, MARKELNG, POINTLAT, POINTLNG from ENVIRICONDATA_H0001Z000E00 where ISDELETE = 0 and PGUID = '" + markerguid + "' and UNITEID = '" + UnitID + "'";
-				dataTable = FileReader.often_ahp.ExecuteDataTable(sql, (OleDbParameter[])null);
-				if (dataTable.Rows.Count > 0 && dataTable.Rows[0]["POINTLAT"].ToString() != "")
-				{
-					dictionary["lat"] = double.Parse(dataTable.Rows[0]["POINTLAT"].ToString());
-					dictionary["lng"] = double.Parse(dataTable.Rows[0]["POINTLNG"].ToString());
-					num = double.Parse(dataTable.Rows[0]["MARKELAT"].ToString());
-					num2 = double.Parse(dataTable.Rows[0]["MARKELNG"].ToString());
-				}
-			}
-
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
             FileReader.once_ahp = new AccessHelper(WorkPath + "data\\MOB_H0001Z000E00.mdb");
-            sql = "select POINTLAT, POINTLNG from M_ICONPOSITION_H0001Z000E00 where ISDELETE = 0 and UPGUID = '" + markerguid + "' and UNITID = '" + UnitID + "'";
-            dataTable = FileReader.once_ahp.ExecuteDataTable(sql, null);
+            string sql = "select POINTLAT, POINTLNG from M_ICONPOSITION_H0001Z000E00 where ISDELETE = 0 and UPGUID = '" + markerguid + "' and UNITID = '" + UnitID + "'";
+            DataTable dataTable = FileReader.once_ahp.ExecuteDataTable(sql, null);
             if (dataTable.Rows.Count > 0)
             {
                 dictionary["lat"] = double.Parse(dataTable.Rows[0]["POINTLAT"].ToString());
                 dictionary["lng"] = double.Parse(dataTable.Rows[0]["POINTLNG"].ToString());
             }
-            mapHelper1.DrawPointLine(markerguid, num, num2, dictionary);
+            else
+            {
+                return;
+            }
+            
             FileReader.once_ahp.CloseConn();
+            double num = 0.0;
+			double num2 = 0.0;
+            sql = "select MARKELAT, MARKELNG from ENVIRICONDATA_H0001Z000E00 where ISDELETE = 0 and PGUID = '" + markerguid + "' and UNITEID = '" + UnitID + "'";
+            dataTable = FileReader.often_ahp.ExecuteDataTable(sql, (OleDbParameter[])null);
+            if (dataTable.Rows.Count > 0)
+            {
+                num = double.Parse(dataTable.Rows[0]["MARKELAT"].ToString());
+                num2 = double.Parse(dataTable.Rows[0]["MARKELNG"].ToString());
+            }
+            
+			sql = "select LINETYPE, LINEWIDTH, LINECOLOR, LINEOPACITY from ENVIRLINE_H0001Z000E00 where ISDELETE = 0 and UPGUID = '" + markerguid + "'";
+			dataTable = FileReader.often_ahp.ExecuteDataTable(sql, (OleDbParameter[])null);
+            if (dataTable.Rows.Count > 0)
+            {
+                dictionary["type"] = dataTable.Rows[0]["LINETYPE"].ToString();
+                dictionary["width"] = int.Parse(dataTable.Rows[0]["LINEWIDTH"].ToString());
+                dictionary["color"] = dataTable.Rows[0]["LINECOLOR"].ToString();
+                dictionary["opacity"] = double.Parse(dataTable.Rows[0]["LINEOPACITY"].ToString());
+                dictionary["arrow"] = false;
+            }
+            else
+            {
+                dictionary["type"] = "实线";
+                dictionary["width"] = 1;
+                dictionary["color"] = "#FF0000";
+                dictionary["opacity"] = 1.0;
+                dictionary["arrow"] = false;
+            }
+            mapHelper1.DrawPointLine(markerguid, num, num2, dictionary);
         }
 
 		private static void SendMessage(string strText, int data, string FormName)
@@ -3208,12 +3219,9 @@ namespace EnvirInfoSys
                 return;
             }
             string iconpath = WorkPath + "icon\\人.png";
-			
-            TreeListNode pNode = treeList1.FocusedNode;
-            string unit_guid = pNode["pguid"].ToString();
             if (Person_GUID[text].vis == false)
             {
-                if (Person_GUID[text].per_unit == unit_guid)
+                if (Check_Person(Person_GUID[text]))
                 {
                     Person_GUID[text].vis = true;
                     ShowPerson(Person_GUID[text]);
@@ -3223,7 +3231,7 @@ namespace EnvirInfoSys
             }
             else
             {
-                if (Person_GUID[text].per_unit != unit_guid)
+                if (!Check_Person(Person_GUID[text]))
                 {
                     Person_GUID[text].vis = false;
                     HidePerson(Person_GUID[text].id);
@@ -3235,7 +3243,22 @@ namespace EnvirInfoSys
 			mapHelper1.addMarker(string.Concat(Person_GUID[text].lat), string.Concat(Person_GUID[text].lng), Person_GUID[text].name, canedit: false, iconpath, null, Person_GUID[text].id);
 		}
 
-		private double EnCodeGpsJwd(double jw)
+        private bool Check_Person(Map_Person map_Person)
+        {
+            TreeListNode pNode = treeList1.FocusedNode;
+            string unit_guid = pNode["pguid"].ToString();
+            if (map_Person.per_unit != unit_guid)
+                return false;
+            string sql = "select PGUID from GXPERSONDY_H0001Z000E00 where ISDELETE = 0 and PERSONID = '" + map_Person.id + "' and GXPGUID = '" + FLguid + "' and UNITID = '" + UnitID + "'";
+            FileReader.once_ahp = new AccessHelper(WorkPath + "data\\PersonDy_H0001Z000E00.mdb");
+            DataTable dt = FileReader.once_ahp.ExecuteDataTable(sql);
+            FileReader.once_ahp.CloseConn();
+            if (dt.Rows.Count <= 0)
+                return false;
+            return true;
+        }
+
+        private double EnCodeGpsJwd(double jw)
 		{
 			string text = jw.ToString();
 			int num = text.IndexOf(".");
