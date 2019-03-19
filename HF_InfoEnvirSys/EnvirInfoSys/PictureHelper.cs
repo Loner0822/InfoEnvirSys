@@ -43,16 +43,17 @@ namespace EnvirInfoSys
 		public static DataTable XmlToDataTable(string xmlString)
 		{
 			XmlDocument xmlDocument = new XmlDocument();
-			if (xmlString == "0")
+			if (xmlString == "0" || xmlString == "error")
 			{
 				return new DataTable();
 			}
-			xmlDocument.LoadXml(xmlString);
-			StringReader stringReader = null;
-			XmlTextReader xmlTextReader = null;
-			try
+            StringReader stringReader = null;
+            XmlTextReader xmlTextReader = null;
+            try
 			{
-				DataSet dataSet = new DataSet();
+                xmlDocument.LoadXml(xmlString);
+                
+                DataSet dataSet = new DataSet();
 				stringReader = new StringReader(xmlDocument.InnerXml);
 				xmlTextReader = new XmlTextReader(stringReader);
 				dataSet.ReadXml(xmlTextReader);

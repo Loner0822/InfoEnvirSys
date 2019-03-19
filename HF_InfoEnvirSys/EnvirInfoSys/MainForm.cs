@@ -674,7 +674,8 @@ namespace EnvirInfoSys
 			Get_All_Marker();
 			if (levelguid == string.Empty)
 			{
-				mapHelper1.ShowMap(cur_Level, cur_Level.ToString(), canEdit: false, map_type, null, null, null, 1.0, 400);
+				mapHelper1.InitMap(cur_Level, cur_Level.ToString(), false, map_type, null, null, null, 1.0, 400);
+				mapHelper1.ShowMap(cur_Level, cur_Level.ToString());
 				HideMessage();
 				return;
 			}
@@ -1143,7 +1144,8 @@ namespace EnvirInfoSys
 			barButtonItem.Caption = text;
 			if (levelguid == string.Empty)
 			{
-				mapHelper1.ShowMap(cur_Level, cur_Level.ToString(), canEdit: false, map_type, null, null, null, 1.0, 400);
+				mapHelper1.InitMap(cur_Level, cur_Level.ToString(), false, map_type, null, null, null, 1.0, 400);
+				mapHelper1.ShowMap(cur_Level, cur_Level.ToString());
 				return;
 			}
 			FLguid = e.Item.Tag.ToString();
@@ -1206,9 +1208,12 @@ namespace EnvirInfoSys
 			return regfm.ShowDialog() == DialogResult.OK;
 		}
 
+        private int Draw_Cnt = 0;
+        private int Erase_Cnt = 0;
+
 		private int DrawBorder()
 		{
-            
+            ++Draw_Cnt;   
             int num = 0;
 			Dictionary<string, object> dictionary = new Dictionary<string, object>();
 			string dlabel = "fb66d40b-50fa-4d88-8156-c590328004cb";
@@ -1239,13 +1244,15 @@ namespace EnvirInfoSys
 			Dictionary<string, List<double[]>> dictionary2 = Get_Border_Line(pguid);
 			foreach (KeyValuePair<string, List<double[]>> item in dictionary2)
 			{
-				Dictionary<string, object> dictionary3 = new Dictionary<string, object>();
-				dictionary3["type"] = borData.Type;
-				dictionary3["width"] = borData.Width;
-				dictionary3["color"] = borData.Color;
-				dictionary3["opacity"] = borData.Opacity;
-				dictionary3["path"] = item.Value;
-				mapHelper1.DrawBorder("边界线", dictionary3);
+                Dictionary<string, object> dictionary3 = new Dictionary<string, object>
+                {
+                    ["type"] = borData.Type,
+                    ["width"] = borData.Width,
+                    ["color"] = borData.Color,
+                    ["opacity"] = borData.Opacity,
+                    ["path"] = item.Value
+                };
+                mapHelper1.DrawBorder("边界线", dictionary3);
 				num++;
 			}
 			foreach (TreeListNode node in focusedNode.Nodes)
@@ -1254,13 +1261,15 @@ namespace EnvirInfoSys
 				dictionary2 = Get_Border_Line(pguid2);
 				foreach (KeyValuePair<string, List<double[]>> item2 in dictionary2)
 				{
-					Dictionary<string, object> dictionary3 = new Dictionary<string, object>();
-					dictionary3["type"] = "实线";
-					dictionary3["width"] = 1;
-					dictionary3["color"] = "#8B0000";
-					dictionary3["opacity"] = borData.Opacity;
-					dictionary3["path"] = item2.Value;
-					mapHelper1.DrawBorder("边界线", dictionary3);
+                    Dictionary<string, object> dictionary3 = new Dictionary<string, object>
+                    {
+                        ["type"] = "实线",
+                        ["width"] = 1,
+                        ["color"] = "#8B0000",
+                        ["opacity"] = borData.Opacity,
+                        ["path"] = item2.Value
+                    };
+                    mapHelper1.DrawBorder("边界线", dictionary3);
 					num++;
 				}
 			}
@@ -1269,7 +1278,10 @@ namespace EnvirInfoSys
 
 		private void EraseBorder()
 		{
-			for (int i = 0; i < borderlines; i++)
+            ++Erase_Cnt;
+            string dlabel = "fb66d40b-50fa-4d88-8156-c590328004cb";
+            mapHelper1.deleteMarker(dlabel);
+            for (int i = 0; i < borderlines; i++)
 			{
 				mapHelper1.deleteMarker("边界线");
 			}
@@ -1293,13 +1305,15 @@ namespace EnvirInfoSys
 					});
 					continue;
 				}
-				dictionary[key] = new List<double[]>();
-				dictionary[key].Add(new double[2]
-				{
-					double.Parse(dataTable.Rows[i]["LAT"].ToString()),
-					double.Parse(dataTable.Rows[i]["LNG"].ToString())
-				});
-			}
+                dictionary[key] = new List<double[]>
+                {
+                    new double[2]
+                {
+                    double.Parse(dataTable.Rows[i]["LAT"].ToString()),
+                    double.Parse(dataTable.Rows[i]["LNG"].ToString())
+                }
+                };
+            }
 			while (dictionary.Count <= 0)
 			{
 				if (!GL_UPGUID.ContainsKey(text))
@@ -1388,58 +1402,58 @@ namespace EnvirInfoSys
 		{
 		}
 
-		private void UpdateDelete(string markerguid)
-		{
-			if (markerguid.IndexOf("_arrow") <= 0)
-			{
-				if (markerguid.IndexOf("_line") > 0)
-				{
-					string text = markerguid.Substring(0, 32);
-					for (int i = 0; i < cur_lst.Count; i++)
-					{
-						if (cur_lst[i]["guid"].ToString() == text)
-						{
-							cur_lst[i]["topoint"] = null;
-							break;
-						}
-					}
-					string sql = "update ENVIRICONDATA_H0001Z000E00 set S_UDTIME = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', POINTLNG = '', POINTLAT = '', POINTLINE = 0, POINTARROW = 0 where ISDELETE = 0 and PGUID = '" + text + "' and UNITEID = '" + UnitID + "'";
-					FileReader.often_ahp.ExecuteSql(sql, (OleDbParameter[])null);
-					sql = "update ENVIRLINE_H0001Z000E00 set ISDELETE = 1, S_UDTIME = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' where ISDELETE = 0 and PGUID = '" + text + "'";
-					FileReader.often_ahp.ExecuteSql(sql, (OleDbParameter[])null);
-					if (handle != 2)
-					{
-						string str = GUID_Icon[text];
-						string text2 = GUID_Name[text];
-						string remark = "删除" + Icon_Name[str + ".png"] + "标注" + text2 + "的指向位置";
-						ComputerInfo.WriteLog("删除标注指向位置", remark);
-					}
-				}
-				else
-				{
-					for (int i = 0; i < cur_lst.Count; i++)
-					{
-						if (cur_lst[i]["guid"].ToString() == markerguid)
-						{
-							cur_lst.RemoveAt(i);
-							break;
-						}
-					}
-					string sql = "update ENVIRICONDATA_H0001Z000E00 set ISDELETE = 1, S_UDTIME = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' where ISDELETE = 0 and PGUID = '" + markerguid + "' and UNITEID = '" + UnitID + "'";
-					FileReader.often_ahp.ExecuteSql(sql, (OleDbParameter[])null);
-					string str = GUID_Icon[markerguid];
-					string text2 = GUID_Name[markerguid];
-					string text3 = Icon_JDCode[str];
-					sql = "update " + text3 + " set ISDELETE = 1, S_UDTIME = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' where ISDELEtE = 0 and PGUID = '" + markerguid + "'";
-					FileReader.often_ahp.ExecuteSql(sql, (OleDbParameter[])null);
-					string remark = "删除" + Icon_Name[str + ".png"] + "标注" + text2;
-					ComputerInfo.WriteLog("删除标注", remark);
-				}
-			}
-			treeList1.Focus();
-			mapHelper1.Focus();
-			last_marker = "";
-		}
+        private void UpdateDelete(string markerguid)
+        {
+            if (markerguid.IndexOf("_arrow") <= 0)
+            {
+                if (markerguid.IndexOf("_line") > 0)
+                {
+                    string text = markerguid.Substring(0, 32);
+                    for (int i = 0; i < cur_lst.Count; i++)
+                    {
+                        if (cur_lst[i]["guid"].ToString() == text)
+                        {
+                            cur_lst[i]["topoint"] = null;
+                            break;
+                        }
+                    }
+                    string sql = "update ENVIRICONDATA_H0001Z000E00 set S_UDTIME = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', POINTLNG = '', POINTLAT = '', POINTLINE = 0, POINTARROW = 0 where ISDELETE = 0 and PGUID = '" + text + "' and UNITEID = '" + UnitID + "'";
+                    FileReader.often_ahp.ExecuteSql(sql, (OleDbParameter[])null);
+                    sql = "update ENVIRLINE_H0001Z000E00 set ISDELETE = 1, S_UDTIME = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' where ISDELETE = 0 and PGUID = '" + text + "'";
+                    FileReader.often_ahp.ExecuteSql(sql, (OleDbParameter[])null);
+                    if (handle != 2)
+                    {
+                        string str = GUID_Icon[text];
+                        string text2 = GUID_Name[text];
+                        string remark = "删除" + Icon_Name[str + ".png"] + "标注" + text2 + "的指向位置";
+                        ComputerInfo.WriteLog("删除标注指向位置", remark);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < cur_lst.Count; i++)
+                    {
+                        if (cur_lst[i]["guid"].ToString() == markerguid)
+                        {
+                            cur_lst.RemoveAt(i);
+                            break;
+                        }
+                    }
+                    string sql = "update ENVIRICONDATA_H0001Z000E00 set ISDELETE = 1, S_UDTIME = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' where ISDELETE = 0 and PGUID = '" + markerguid + "' and UNITEID = '" + UnitID + "'";
+                    FileReader.often_ahp.ExecuteSql(sql, (OleDbParameter[])null);
+                    string str = GUID_Icon[markerguid];
+                    string text2 = GUID_Name[markerguid];
+                    string text3 = Icon_JDCode[str];
+                    sql = "update " + text3 + " set ISDELETE = 1, S_UDTIME = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' where ISDELEtE = 0 and PGUID = '" + markerguid + "'";
+                    FileReader.often_ahp.ExecuteSql(sql, (OleDbParameter[])null);
+                    string remark = "删除" + Icon_Name[str + ".png"] + "标注" + text2;
+                    ComputerInfo.WriteLog("删除标注", remark);
+                }
+            }
+            treeList1.Focus();
+            mapHelper1.Focus();
+            last_marker = "";
+        }
 
 		private void treeList1_FocusedNodeChanged(object sender, FocusedNodeChangedEventArgs e)
 		{
@@ -1523,7 +1537,8 @@ namespace EnvirInfoSys
 				{
 					if (!Before_ShowMap)
 					{
-						mapHelper1.ShowMap(cur_Level, GL_NAME[levelguid], Permission, map_type, Icon_Name, null, cur_lst, 1.0, 400);
+						mapHelper1.InitMap(cur_Level, GL_NAME[levelguid], Permission, map_type, Icon_Name, null, cur_lst, 1.0, 400);
+						mapHelper1.ShowMap(cur_Level, GL_NAME[levelguid]);
 						Before_ShowMap = true;
 					}
 					else
@@ -1562,7 +1577,8 @@ namespace EnvirInfoSys
 			}
 			else
 			{
-				mapHelper1.ShowMap(cur_Level, cur_Level.ToString(), canEdit: false, map_type, null, null, null, 1.0, 400);
+				mapHelper1.InitMap(cur_Level, cur_Level.ToString(), false, map_type, null, null, null, 1.0, 400);
+				mapHelper1.ShowMap(cur_Level, cur_Level.ToString());
 			}
 		}
 
@@ -1821,10 +1837,12 @@ namespace EnvirInfoSys
 				}
 				string textName = regfm.textName;
 				string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(Icon_GUID);
-				DataForm dataForm = new DataForm();
-				dataForm.Icon_GUID = fileNameWithoutExtension;
-				dataForm.Update_Data = false;
-				dataForm.Load_Prop();
+                DataForm dataForm = new DataForm
+                {
+                    Icon_GUID = fileNameWithoutExtension,
+                    Update_Data = false
+                };
+                dataForm.Load_Prop();
 				dataForm.ReNew();
 				dataForm.Close_Conn();
 				FDName_Value = dataForm.FDName_Value;
@@ -1845,6 +1863,7 @@ namespace EnvirInfoSys
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
+            //XtraMessageBox.Show(Draw_Cnt.ToString(), Erase_Cnt.ToString());
             Process[] processesByName = Process.GetProcessesByName("TransMessage");
             Process[] array = processesByName;
             foreach (Process process2 in array)
@@ -2256,9 +2275,130 @@ namespace EnvirInfoSys
 			ImportFromDLL.SendMessage(hWnd, 74, wParam, ref pcd);
 		}
 
-		private void mapHelper1_MapMouseup(string Mousebutton, bool canedit, double lat, double lng, int x, int y, string markerguid, string iconPath)
+
+        private void mapHelper1_HasNeighbors(List<string> idLst)
+        {
+            double lat = 0;
+            double lng = 0;
+            string markerguid = null;
+            string iconPath = null;
+            IconListForm iclstfm = new IconListForm();
+            Dictionary<string, string> icon_name = new Dictionary<string, string>();
+            foreach (string idguid in idLst)
+            {
+                Dictionary<string, object> tmp_msg = mapHelper1.GetMarkerParams(idguid);
+                icon_name[idguid] = tmp_msg["name"].ToString();
+            }
+            if (icon_name.Count > 1)
+            {
+                iclstfm.guid_name = icon_name;
+                iclstfm.StartPosition = FormStartPosition.Manual;
+                iclstfm.Left = Control.MousePosition.X;
+                iclstfm.Top = Control.MousePosition.Y;
+                if (iclstfm.ShowDialog() == DialogResult.OK)
+                    markerguid = iclstfm.markerguid;
+                else
+                    return;
+            }
+            else
+            {
+                List<string> list = new List<string>(icon_name.Keys);
+                if (list.Count > 0)
+                    markerguid = list[0];
+            }
+
+            Dictionary<string, object> marker_msg = mapHelper1.GetMarkerParams(markerguid);
+            lat = double.Parse(marker_msg["lat"].ToString());
+            lng = double.Parse(marker_msg["lng"].ToString());
+            iconPath = marker_msg["iconpath"].ToString();
+
+            if (iconPath == WorkPath + "icon\\人.png")
+            {
+                Map_Person map_Person = Person_GUID[markerguid];
+                SendMessage(map_Person.senderid + "," + map_Person.name, 1111, ProgName);
+                return;
+            }
+            mapHelper1.deleteMarker(last_marker + "_line");
+            if (markerguid != string.Empty)
+            {
+                ifm.Close();
+                DrawLine(markerguid);
+                mapHelper1.SetMarkerShine(markerguid, shine: true);
+                ifm = new InfoForm
+                {
+                    Owner = this,
+                    CanEdit = false,
+                    Update_Data = true,
+                    Node_GUID = markerguid,
+                    Icon_GUID = GUID_Icon[markerguid]
+                };
+                ifm.JdCode = Icon_JDCode[ifm.Icon_GUID];
+                ifm.Text = GUID_Name[markerguid];
+                ifm.unitid = UnitID;
+                ifm.StartPosition = FormStartPosition.Manual;
+                ifm.Left = groupControl1.Right - ifm.Width;
+                ifm.Top = groupControl1.Bottom - ifm.Height + 20;
+                ifm.stopshine += StopMarkerShine;
+                ifm.Show();
+            }
+            if (!markerguid.Equals("") || !Icon_GUID.Equals("") || !select_vector)
+            {
+                return;
+            }
+            last_marker = markerguid;
+            BorderForm borderForm = new BorderForm
+            {
+                IsPoint = true,
+                IsLine = false
+            };
+            borderForm.borData.Load_Line(Operator_GUID);
+            if (borderForm.borData.line_data == null)
+            {
+                borderForm.borData.line_data = lineData;
+            }
+            borderForm.borData.lat = lat;
+            borderForm.borData.lng = lng;
+            if (borderForm.ShowDialog() == DialogResult.OK)
+            {
+                lineData = borderForm.borData.line_data;
+                if (handle == 2)
+                {
+                    mapHelper1.deleteMarker(Operator_GUID + "_line");
+                    last_marker = Operator_GUID;
+                    UpdateDelete(Operator_GUID + "_line");
+                }
+                Dictionary<string, object> dictionary = borderForm.borData.ToDic();
+                mapHelper1.DrawPointLine(Operator_GUID, i_lat, i_lng, dictionary);
+                borderForm.borData.Save_Line(Operator_GUID, lat, lng, isAdd: true);
+                for (int i = 0; i < cur_lst.Count; i++)
+                {
+                    if (cur_lst[i]["guid"].ToString() == Operator_GUID)
+                    {
+                        cur_lst[i]["topoint"] = dictionary;
+                        break;
+                    }
+                }
+                if (handle == 1)
+                {
+                    string str = GUID_Icon[Operator_GUID];
+                    string text = GUID_Name[Operator_GUID];
+                    string remark = "添加" + Icon_Name[str + ".png"] + "标注" + text + "的指向位置到(" + lng.ToString() + ", " + lat.ToString() + ")";
+                    ComputerInfo.WriteLog("添加指向位置", remark);
+                }
+                else
+                {
+                    string str = GUID_Icon[Operator_GUID];
+                    string text = GUID_Name[Operator_GUID];
+                    string remark = "修改" + Icon_Name[str + ".png"] + "标注" + text + "的指向位置到(" + lng.ToString() + ", " + lat.ToString() + ")";
+                    ComputerInfo.WriteLog("修改指向位置", remark);
+                }
+            }
+            select_vector = false;
+        }
+
+        private void mapHelper1_MapMouseup(string Mousebutton, bool canedit, double lat, double lng, int x, int y, string markerguid, string iconPath)
 		{
-			if (markerguid.IndexOf("_circle") > 0 || markerguid == "fb66d40b-50fa-4d88-8156-c590328004cb")
+			/*if (markerguid.IndexOf("_circle") > 0 || markerguid == "fb66d40b-50fa-4d88-8156-c590328004cb")
 			{
 				return;
 			}
@@ -2343,7 +2483,7 @@ namespace EnvirInfoSys
 					ComputerInfo.WriteLog("修改指向位置", remark);
 				}
 			}
-			select_vector = false;
+			select_vector = false;*/
 		}
 
 		private bool TestServerConnection(string host, int port, int millisecondsTimeout)
@@ -2480,7 +2620,8 @@ namespace EnvirInfoSys
 					{
 						if (!Before_ShowMap)
 						{
-							mapHelper1.ShowMap(cur_Level, GL_NAME[levelguid], Permission, map_type, Icon_Name, null, cur_lst, 1.0, 400);
+							mapHelper1.InitMap(cur_Level, GL_NAME[levelguid], Permission, map_type, Icon_Name, null, cur_lst, 1.0, 400);
+							mapHelper1.ShowMap(cur_Level, GL_NAME[levelguid]);
 							Before_ShowMap = true;
 							continue;
 						}
@@ -2520,7 +2661,8 @@ namespace EnvirInfoSys
 				}
 				else
 				{
-					mapHelper1.ShowMap(cur_Level, cur_Level.ToString(), canEdit: false, map_type, null, null, null, 1.0, 400);
+					mapHelper1.InitMap(cur_Level, cur_Level.ToString(), false, map_type, null, null, null, 1.0, 400);
+					mapHelper1.ShowMap(cur_Level, cur_Level.ToString());
 				}
 			}
 			if (flag)
@@ -2907,6 +3049,7 @@ namespace EnvirInfoSys
 			{
 				ifm.Close();
 			}
+            EraseBorder();
 			borderlines = DrawBorder();
 			foreach (PictureBox control in flowLayoutPanel1.Controls)
 			{
@@ -3019,7 +3162,8 @@ namespace EnvirInfoSys
 			{
 				if (!Before_ShowMap)
 				{
-					mapHelper1.ShowMap(cur_Level, GL_NAME[levelguid], Permission, map_type, Icon_Name, null, cur_lst, 1.0, 400);
+					mapHelper1.InitMap(cur_Level, GL_NAME[levelguid], Permission, map_type, Icon_Name, null, cur_lst, 1.0, 400);
+					mapHelper1.ShowMap(cur_Level, GL_NAME[levelguid]);
 					Before_ShowMap = true;
 					return;
 				}
@@ -3116,12 +3260,26 @@ namespace EnvirInfoSys
         private void ShowPerson(Map_Person person)
         {
             string iconpath = WorkPath + "icon\\人.png";
+            Dictionary<string, object> dic = new Dictionary<string, object>
+            {
+                { "minr", 5 },
+                { "maxr", 20 },
+                { "circles", 5 },
+                { "timeStep", 200 },
+                { "strokeColor", "#ff0000" },
+                { "strokeWeight", 1 },
+                { "strokeOpacity", 1 },
+                { "fillColor", "#ffffff" },
+                { "fillOpacity", 0.0 }
+            };
             mapHelper1.addMarker(string.Concat(person.lat), string.Concat(person.lng), person.name, canedit: false, iconpath, null, person.id);
+            mapHelper1.DrawWaver(person.id, dic, person.id + "_waver");
             ++cnt;
         }
 
         private void HidePerson(string personid)
         {
+            mapHelper1.deleteMarker(Person_GUID[personid].id + "_waver");
             mapHelper1.deleteMarker(Person_GUID[personid].id);
             --cnt;
         }
@@ -3238,10 +3396,10 @@ namespace EnvirInfoSys
                     return;
                 }
             }
-			
-		    mapHelper1.deleteMarker(Person_GUID[text].id);
-			mapHelper1.addMarker(string.Concat(Person_GUID[text].lat), string.Concat(Person_GUID[text].lng), Person_GUID[text].name, canedit: false, iconpath, null, Person_GUID[text].id);
-		}
+
+            HidePerson(Person_GUID[text].id);
+            ShowPerson(Person_GUID[text]);
+        }
 
         private bool Check_Person(Map_Person map_Person)
         {
@@ -3949,6 +4107,7 @@ namespace EnvirInfoSys
             // 
             // mapHelper1
             // 
+            this.mapHelper1.address = null;
             this.mapHelper1.BackColor = System.Drawing.Color.Transparent;
             this.mapHelper1.centerlat = 0D;
             this.mapHelper1.centerlng = 0D;
@@ -3958,6 +4117,7 @@ namespace EnvirInfoSys
             this.mapHelper1.maparr = null;
             this.mapHelper1.Margin = new System.Windows.Forms.Padding(4, 7, 4, 7);
             this.mapHelper1.Name = "mapHelper1";
+            this.mapHelper1.port = 0;
             this.mapHelper1.roadmappath = null;
             this.mapHelper1.satellitemappath = null;
             this.mapHelper1.Size = new System.Drawing.Size(1421, 970);
@@ -3977,6 +4137,7 @@ namespace EnvirInfoSys
             this.mapHelper1.MapTypeChanged += new MapHelper.MapHelper.DlMapTypeChanged(this.mapHelper1_MapTypeChanged);
             this.mapHelper1.MapMouseWheel += new MapHelper.MapHelper.DlMouseWheel(this.mapHelper1_MapMouseWheel);
             this.mapHelper1.MapMouseOver += new MapHelper.MapHelper.DlMapMouseOver(this.mapHelper1_MapMouseOver);
+            this.mapHelper1.HasNeighbors += new MapHelper.MapHelper.DlHasNeighbors(this.mapHelper1_HasNeighbors);
             // 
             // groupControl1
             // 
@@ -4060,5 +4221,6 @@ namespace EnvirInfoSys
             this.PerformLayout();
 
 		}
-	}
+
+    }
 }

@@ -181,7 +181,8 @@ namespace EnvirInfoSys
 			flowLayoutPanel1.Controls.Add(pictureBox);
 			fileStream.Close();
 			fileStream.Dispose();
-			mapHelper1.ShowMap(cur_level, cur_level.ToString(), canEdit: false, map_type, null, null, null, 1.0, 400);
+			mapHelper1.InitMap(cur_level, cur_level.ToString(), false, map_type, null, null, null, 1.0, 400);
+			mapHelper1.ShowMap(cur_level, cur_level.ToString());
 		}
 
 		private void Polygon_Click(object sender, EventArgs e)
@@ -481,7 +482,8 @@ namespace EnvirInfoSys
 					mapHelper1.centerlng = mapCenter[1];
 				}
 				Before_ShowMap = true;
-				mapHelper1.ShowMap(cur_level, cur_level.ToString(), canEdit: false, map_type, null, null, null, 1.0, 400);
+				mapHelper1.InitMap(cur_level, cur_level.ToString(), false, map_type, null, null, null, 1.0, 400);
+				mapHelper1.ShowMap(cur_level, cur_level.ToString());
 			}
 		}
 
@@ -559,7 +561,8 @@ namespace EnvirInfoSys
 					FileReader.line_ahp.ExecuteSql(sql, (OleDbParameter[])null);
 				}
 				ComputerInfo.WriteLog("导入边界线", remark);
-				mapHelper1.ShowMap(cur_level, cur_level.ToString(), canEdit: false, map_type, null, null, null, 1.0, 400);
+				mapHelper1.InitMap(cur_level, cur_level.ToString(), false, map_type, null, null, null, 1.0, 400);
+				mapHelper1.ShowMap(cur_level, cur_level.ToString());
 			}
 		}
 

@@ -435,8 +435,8 @@ namespace EnvirInfoSys
 		public void Add_Image(string fullname)
 		{
 			FileStream fileStream = new FileStream(fullname, FileMode.Open, FileAccess.Read);
-			Image image = Image.FromStream(fileStream);
-			string fileName = Path.GetFileName(fileStream.Name);
+            Image image = Image.FromStream(fileStream);
+            string fileName = Path.GetFileName(fileStream.Name);
 			imageList1.Images.Add("", image);
 			ImageList imageList = imageList1;
 			imageList.Tag = imageList.Tag + fileName + ",";
