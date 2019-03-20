@@ -321,6 +321,9 @@ namespace EnvirInfoSys
         private PanelControl panelControl1;
         private FlowLayoutPanel flowLayoutPanel1;
         private PictureBox pbMove;
+        private PictureBox pictureBox1;
+        private PictureBox pictureBox3;
+        private PictureBox pictureBox2;
         private BarStaticItem barStaticItem2;
 
 		protected SplashScreenManager LoadForm
@@ -476,6 +479,33 @@ namespace EnvirInfoSys
                 str += "-";
             }
             dockPanel2.TabText = str;
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.Load(WorkPath + "icon\\导航.png");
+            ToolTip toolTip = new ToolTip
+            {
+                InitialDelay = 10,
+                ReshowDelay = 10,
+                AutoPopDelay = 10000
+            };
+            toolTip.SetToolTip(pictureBox1, "导航");
+            pictureBox2.Load(WorkPath + "icon\\街道图.png");
+            toolTip = new ToolTip
+            {
+                InitialDelay = 10,
+                ReshowDelay = 10,
+                AutoPopDelay = 10000
+            };
+            toolTip.SetToolTip(pictureBox2, "街道图");
+            pictureBox3.Load(WorkPath + "icon\\卫星图.png");
+            toolTip = new ToolTip
+            {
+                InitialDelay = 10,
+                ReshowDelay = 10,
+                AutoPopDelay = 10000
+            };
+            toolTip.SetToolTip(pictureBox3, "卫星图");
         }
 
 		private void MainForm_Shown(object sender, EventArgs e)
@@ -764,41 +794,41 @@ namespace EnvirInfoSys
 					fileStream.Dispose();
 				}
 			}
-			PictureBox pictureBox2 = new PictureBox();
+			PictureBox pictureBox_2 = new PictureBox();
             ToolTip toolTip2 = new ToolTip
             {
                 InitialDelay = 10,
                 ReshowDelay = 10,
                 AutoPopDelay = 10000
             };
-            toolTip2.SetToolTip(pictureBox2, "全选");
-			pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
-			pictureBox2.BorderStyle = BorderStyle.Fixed3D;
-			pictureBox2.Width = 32;
-			pictureBox2.Height = 32;
-			pictureBox2.Click += SelectAll_Click;
-			pictureBox2.Name = "全选";
+            toolTip2.SetToolTip(pictureBox_2, "全选");
+            pictureBox_2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox_2.BorderStyle = BorderStyle.Fixed3D;
+            pictureBox_2.Width = 32;
+            pictureBox_2.Height = 32;
+            pictureBox_2.Click += SelectAll_Click;
+            pictureBox_2.Name = "全选";
 			FileStream fileStream2 = new FileStream(WorkPath + "icon\\全选.png", FileMode.Open, FileAccess.Read);
-			pictureBox2.Image = Image.FromStream(fileStream2);
-			flowLayoutPanel1.Controls.Add(pictureBox2);
+            pictureBox_2.Image = Image.FromStream(fileStream2);
+			flowLayoutPanel1.Controls.Add(pictureBox_2);
 			fileStream2.Close();
 			fileStream2.Dispose();
-			pictureBox2 = new PictureBox();
+            pictureBox_2 = new PictureBox();
             toolTip2 = new ToolTip
             {
                 InitialDelay = 10,
                 ReshowDelay = 10,
                 AutoPopDelay = 10000
             };
-            toolTip2.SetToolTip(pictureBox2, "全不选");
-			pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
-			pictureBox2.Width = 32;
-			pictureBox2.Height = 32;
-			pictureBox2.Click += CancelAll_Click;
-			pictureBox2.Name = "全不选";
+            toolTip2.SetToolTip(pictureBox_2, "全不选");
+            pictureBox_2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox_2.Width = 32;
+            pictureBox_2.Height = 32;
+            pictureBox_2.Click += CancelAll_Click;
+            pictureBox_2.Name = "全不选";
 			fileStream2 = new FileStream(WorkPath + "icon\\全不选.png", FileMode.Open, FileAccess.Read);
-			pictureBox2.Image = Image.FromStream(fileStream2);
-			flowLayoutPanel1.Controls.Add(pictureBox2);
+            pictureBox_2.Image = Image.FromStream(fileStream2);
+			flowLayoutPanel1.Controls.Add(pictureBox_2);
 			fileStream2.Close();
 			fileStream2.Dispose();
 		}
@@ -3556,7 +3586,24 @@ namespace EnvirInfoSys
 			base.Dispose(disposing);
 		}
 
-		private void InitializeComponent()
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            map_type = "g_satellite";
+            mapHelper1.SetMapType("卫星地图");
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            map_type = "g_map";
+            mapHelper1.SetMapType("电子地图");
+        }
+
+        private void InitializeComponent()
 		{
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
@@ -3609,6 +3656,9 @@ namespace EnvirInfoSys
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.pbMove = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.mapHelper1 = new MapHelper.MapHelper();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
@@ -3628,6 +3678,9 @@ namespace EnvirInfoSys
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbMove)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
@@ -4098,12 +4151,45 @@ namespace EnvirInfoSys
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.pictureBox3);
+            this.panel2.Controls.Add(this.pictureBox2);
+            this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Controls.Add(this.mapHelper1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(2, 31);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1421, 970);
             this.panel2.TabIndex = 2;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox3.Location = new System.Drawing.Point(1325, 105);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(55, 55);
+            this.pictureBox3.TabIndex = 3;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox2.Location = new System.Drawing.Point(1325, 175);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(55, 55);
+            this.pictureBox2.TabIndex = 2;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.Location = new System.Drawing.Point(1325, 35);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(55, 55);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // mapHelper1
             // 
@@ -4213,6 +4299,9 @@ namespace EnvirInfoSys
             this.panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbMove)).EndInit();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
