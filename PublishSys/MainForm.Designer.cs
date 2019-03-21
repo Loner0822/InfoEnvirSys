@@ -59,6 +59,7 @@
             this.textEdit1 = new DevExpress.XtraEditors.TextEdit();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.treeList1 = new DevExpress.XtraTreeList.TreeList();
+            this.xtraFolderBrowserDialog1 = new DevExpress.XtraEditors.XtraFolderBrowserDialog(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl2)).BeginInit();
             this.groupControl2.SuspendLayout();
@@ -130,12 +131,14 @@
             this.barButtonItem1.Caption = "下载基础数据";
             this.barButtonItem1.Id = 0;
             this.barButtonItem1.Name = "barButtonItem1";
+            this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
             // 
             // barButtonItem2
             // 
             this.barButtonItem2.Caption = "上传基础数据到企业网服务器";
             this.barButtonItem2.Id = 1;
             this.barButtonItem2.Name = "barButtonItem2";
+            this.barButtonItem2.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem2_ItemClick);
             // 
             // barSubItem1
             // 
@@ -153,24 +156,28 @@
             this.barButtonItem5.Caption = "数据备份";
             this.barButtonItem5.Id = 6;
             this.barButtonItem5.Name = "barButtonItem5";
+            this.barButtonItem5.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem5_ItemClick);
             // 
             // barButtonItem6
             // 
             this.barButtonItem6.Caption = "数据恢复";
             this.barButtonItem6.Id = 8;
             this.barButtonItem6.Name = "barButtonItem6";
+            this.barButtonItem6.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem6_ItemClick);
             // 
             // barButtonItem7
             // 
             this.barButtonItem7.Caption = "数据同步";
             this.barButtonItem7.Id = 9;
             this.barButtonItem7.Name = "barButtonItem7";
+            this.barButtonItem7.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem7_ItemClick);
             // 
             // barButtonItem8
             // 
             this.barButtonItem8.Caption = "数据上传";
             this.barButtonItem8.Id = 10;
             this.barButtonItem8.Name = "barButtonItem8";
+            this.barButtonItem8.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem8_ItemClick);
             // 
             // barSubItem2
             // 
@@ -185,12 +192,14 @@
             this.barButtonItem4.Caption = "服务器IP设置";
             this.barButtonItem4.Id = 5;
             this.barButtonItem4.Name = "barButtonItem4";
+            this.barButtonItem4.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem4_ItemClick);
             // 
             // barButtonItem3
             // 
             this.barButtonItem3.Caption = "退出";
             this.barButtonItem3.Id = 4;
             this.barButtonItem3.Name = "barButtonItem3";
+            this.barButtonItem3.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem3_ItemClick);
             // 
             // bar3
             // 
@@ -294,6 +303,7 @@
             this.simpleButton2.Size = new System.Drawing.Size(100, 35);
             this.simpleButton2.TabIndex = 3;
             this.simpleButton2.Text = "发布系统";
+            this.simpleButton2.Click += new System.EventHandler(this.simpleButton2_Click);
             // 
             // simpleButton1
             // 
@@ -303,6 +313,7 @@
             this.simpleButton1.Size = new System.Drawing.Size(100, 35);
             this.simpleButton1.TabIndex = 2;
             this.simpleButton1.Text = "下载地图";
+            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
             // 
             // labelControl1
             // 
@@ -342,6 +353,10 @@
             this.treeList1.TabIndex = 0;
             this.treeList1.ViewStyle = DevExpress.XtraTreeList.TreeListViewStyle.TreeView;
             this.treeList1.FocusedNodeChanged += new DevExpress.XtraTreeList.FocusedNodeChangedEventHandler(this.treeList1_FocusedNodeChanged);
+            // 
+            // xtraFolderBrowserDialog1
+            // 
+            this.xtraFolderBrowserDialog1.SelectedPath = "xtraFolderBrowserDialog1";
             // 
             // MainForm
             // 
@@ -411,6 +426,7 @@
         private DevExpress.XtraEditors.TextEdit textEdit1;
         private DevExpress.XtraEditors.SimpleButton simpleButton2;
         private DevExpress.XtraEditors.SimpleButton simpleButton1;
+        private DevExpress.XtraEditors.XtraFolderBrowserDialog xtraFolderBrowserDialog1;
     }
 }
 
