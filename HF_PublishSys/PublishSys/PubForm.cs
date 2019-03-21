@@ -709,7 +709,6 @@ namespace PublishSys
 
 		private void InitializeComponent()
 		{
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PubForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.下载地图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -742,7 +741,7 @@ namespace PublishSys
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
             this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.menuStrip1.SuspendLayout();
@@ -767,7 +766,7 @@ namespace PublishSys
             this.退出ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1924, 32);
+            this.menuStrip1.Size = new System.Drawing.Size(1951, 32);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -874,7 +873,7 @@ namespace PublishSys
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 32);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1924, 645);
+            this.panel2.Size = new System.Drawing.Size(1951, 838);
             this.panel2.TabIndex = 7;
             // 
             // groupBox2
@@ -885,7 +884,7 @@ namespace PublishSys
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(788, 645);
+            this.groupBox2.Size = new System.Drawing.Size(815, 838);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "单位列表";
@@ -895,7 +894,7 @@ namespace PublishSys
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(3, 24);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(782, 473);
+            this.treeView1.Size = new System.Drawing.Size(809, 666);
             this.treeView1.TabIndex = 3;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
@@ -911,16 +910,16 @@ namespace PublishSys
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(3, 497);
+            this.panel1.Location = new System.Drawing.Point(3, 690);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(782, 145);
+            this.panel1.Size = new System.Drawing.Size(809, 145);
             this.panel1.TabIndex = 2;
             // 
             // button3
             // 
             this.button3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button3.Enabled = false;
-            this.button3.Location = new System.Drawing.Point(408, 60);
+            this.button3.Location = new System.Drawing.Point(421, 60);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(100, 30);
             this.button3.TabIndex = 9;
@@ -931,7 +930,7 @@ namespace PublishSys
             // textBox3
             // 
             this.textBox3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBox3.Location = new System.Drawing.Point(432, 27);
+            this.textBox3.Location = new System.Drawing.Point(445, 27);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(150, 28);
             this.textBox3.TabIndex = 8;
@@ -941,7 +940,7 @@ namespace PublishSys
             // textBox2
             // 
             this.textBox2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBox2.Location = new System.Drawing.Point(210, 27);
+            this.textBox2.Location = new System.Drawing.Point(223, 27);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(150, 28);
             this.textBox2.TabIndex = 7;
@@ -952,7 +951,7 @@ namespace PublishSys
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(364, 30);
+            this.label3.Location = new System.Drawing.Point(377, 30);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(62, 18);
             this.label3.TabIndex = 6;
@@ -963,7 +962,7 @@ namespace PublishSys
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(78, 30);
+            this.label2.Location = new System.Drawing.Point(91, 30);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(134, 18);
             this.label2.TabIndex = 5;
@@ -973,7 +972,7 @@ namespace PublishSys
             // textBox1
             // 
             this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.textBox1.Location = new System.Drawing.Point(261, 61);
+            this.textBox1.Location = new System.Drawing.Point(274, 61);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(141, 28);
             this.textBox1.TabIndex = 4;
@@ -983,7 +982,7 @@ namespace PublishSys
             // 
             this.button2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(514, 60);
+            this.button2.Location = new System.Drawing.Point(527, 60);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 30);
             this.button2.TabIndex = 3;
@@ -995,7 +994,7 @@ namespace PublishSys
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(175, 66);
+            this.label1.Location = new System.Drawing.Point(188, 66);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(80, 18);
             this.label1.TabIndex = 0;
@@ -1005,7 +1004,7 @@ namespace PublishSys
             // 
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(599, 24);
+            this.button1.Location = new System.Drawing.Point(612, 24);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 30);
             this.button1.TabIndex = 2;
@@ -1034,9 +1033,9 @@ namespace PublishSys
             // splitter1
             // 
             this.splitter1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.splitter1.Location = new System.Drawing.Point(788, 0);
+            this.splitter1.Location = new System.Drawing.Point(815, 0);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(10, 645);
+            this.splitter1.Size = new System.Drawing.Size(10, 838);
             this.splitter1.TabIndex = 1;
             this.splitter1.TabStop = false;
             // 
@@ -1044,9 +1043,9 @@ namespace PublishSys
             // 
             this.groupBox1.Controls.Add(this.dataGridView1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.groupBox1.Location = new System.Drawing.Point(798, 0);
+            this.groupBox1.Location = new System.Drawing.Point(825, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1126, 645);
+            this.groupBox1.Size = new System.Drawing.Size(1126, 838);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "发布记录";
@@ -1066,7 +1065,7 @@ namespace PublishSys
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 30;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1120, 618);
+            this.dataGridView1.Size = new System.Drawing.Size(1120, 811);
             this.dataGridView1.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -1090,7 +1089,7 @@ namespace PublishSys
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1924, 677);
+            this.ClientSize = new System.Drawing.Size(1951, 870);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

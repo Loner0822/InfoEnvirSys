@@ -324,6 +324,14 @@ namespace EnvirInfoSys
         private PictureBox pictureBox1;
         private PictureBox pictureBox3;
         private PictureBox pictureBox2;
+        private PanelControl panelControl3;
+        private PanelControl panelControl2;
+        private PictureBox pictureBox5;
+        private SimpleButton simpleButton1;
+        private PictureBox pictureBox4;
+        private SimpleButton simpleButton2;
+        private ComboBoxEdit comboBoxEdit2;
+        private ComboBoxEdit comboBoxEdit1;
         private BarStaticItem barStaticItem2;
 
 		protected SplashScreenManager LoadForm
@@ -3445,7 +3453,7 @@ namespace EnvirInfoSys
                 return false;
             return true;
         }
-
+  
         private double EnCodeGpsJwd(double jw)
 		{
 			string text = jw.ToString();
@@ -3588,19 +3596,62 @@ namespace EnvirInfoSys
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-
+            MouseEventArgs Mouse_e = (MouseEventArgs)e;
+            if (Mouse_e.Button == MouseButtons.Left)
+            {
+                if (panelControl2.Visible == false)
+                {
+                    simpleButton1.Text = "v";
+                    panelControl2.Visible = true;
+                    simpleButton2.Top = panelControl2.Top + panelControl2.Height;
+                    simpleButton2.Text = "查找位置";
+                    simpleButton2.Visible = true;
+                }
+                else
+                {
+                    panelControl2.Visible = false;
+                    panelControl3.Visible = false;
+                    simpleButton2.Visible = false;
+                }
+            }
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
-            map_type = "g_satellite";
-            mapHelper1.SetMapType("卫星地图");
+            MouseEventArgs Mouse_e = (MouseEventArgs)e;
+            if (Mouse_e.Button == MouseButtons.Left)
+            {
+                map_type = "g_satellite";
+                mapHelper1.SetMapType("卫星地图");
+            }
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            map_type = "g_map";
-            mapHelper1.SetMapType("电子地图");
+            MouseEventArgs Mouse_e = (MouseEventArgs)e;
+            if (Mouse_e.Button == MouseButtons.Left)
+            {
+                map_type = "g_map";
+                mapHelper1.SetMapType("电子地图");
+            }
+        }
+
+        private void simpleButton1_Click(object sender, EventArgs e)
+        {
+            if (simpleButton1.Text == "v")
+            {
+                simpleButton1.Text = "^";
+                panelControl3.Visible = true;
+                simpleButton2.Top = panelControl3.Top + panelControl3.Height;
+                simpleButton2.Text = "查询导航";
+            }
+            else
+            {
+                simpleButton1.Text = "v";
+                panelControl3.Visible = false;
+                simpleButton2.Top = panelControl2.Top + panelControl2.Height;
+                simpleButton2.Text = "查找位置";
+            }
         }
 
         private void InitializeComponent()
@@ -3656,6 +3707,14 @@ namespace EnvirInfoSys
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.pbMove = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
+            this.panelControl3 = new DevExpress.XtraEditors.PanelControl();
+            this.comboBoxEdit2 = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            this.comboBoxEdit1 = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -3678,6 +3737,14 @@ namespace EnvirInfoSys
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbMove)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).BeginInit();
+            this.panelControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
+            this.panelControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit1.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -3972,7 +4039,7 @@ namespace EnvirInfoSys
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 1067);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 1014);
             this.barDockControlBottom.Manager = this.barManager1;
             this.barDockControlBottom.Size = new System.Drawing.Size(1712, 36);
             // 
@@ -3982,7 +4049,7 @@ namespace EnvirInfoSys
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 64);
             this.barDockControlLeft.Manager = this.barManager1;
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 1003);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 950);
             // 
             // barDockControlRight
             // 
@@ -3990,7 +4057,7 @@ namespace EnvirInfoSys
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1712, 64);
             this.barDockControlRight.Manager = this.barManager1;
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 1003);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 950);
             // 
             // barButtonItem13
             // 
@@ -4074,7 +4141,7 @@ namespace EnvirInfoSys
             this.dockPanel1.Options.ShowCloseButton = false;
             this.dockPanel1.OriginalSize = new System.Drawing.Size(200, 200);
             this.dockPanel1.SavedSizeFactor = 0D;
-            this.dockPanel1.Size = new System.Drawing.Size(200, 1003);
+            this.dockPanel1.Size = new System.Drawing.Size(200, 950);
             this.dockPanel1.Text = "管辖范围";
             // 
             // dockPanel1_Container
@@ -4082,7 +4149,7 @@ namespace EnvirInfoSys
             this.dockPanel1_Container.Controls.Add(this.treeList1);
             this.dockPanel1_Container.Location = new System.Drawing.Point(6, 33);
             this.dockPanel1_Container.Name = "dockPanel1_Container";
-            this.dockPanel1_Container.Size = new System.Drawing.Size(185, 964);
+            this.dockPanel1_Container.Size = new System.Drawing.Size(185, 911);
             this.dockPanel1_Container.TabIndex = 0;
             // 
             // treeList1
@@ -4091,7 +4158,7 @@ namespace EnvirInfoSys
             this.treeList1.Location = new System.Drawing.Point(0, 0);
             this.treeList1.Name = "treeList1";
             this.treeList1.OptionsBehavior.Editable = false;
-            this.treeList1.Size = new System.Drawing.Size(185, 964);
+            this.treeList1.Size = new System.Drawing.Size(185, 911);
             this.treeList1.TabIndex = 0;
             this.treeList1.ViewStyle = DevExpress.XtraTreeList.TreeListViewStyle.TreeView;
             this.treeList1.FocusedNodeChanged += new DevExpress.XtraTreeList.FocusedNodeChangedEventHandler(this.treeList1_FocusedNodeChanged);
@@ -4107,7 +4174,7 @@ namespace EnvirInfoSys
             this.dockPanel2.Options.ShowCloseButton = false;
             this.dockPanel2.OriginalSize = new System.Drawing.Size(87, 200);
             this.dockPanel2.SavedSizeFactor = 0D;
-            this.dockPanel2.Size = new System.Drawing.Size(87, 1003);
+            this.dockPanel2.Size = new System.Drawing.Size(87, 950);
             this.dockPanel2.Text = "图例";
             // 
             // dockPanel2_Container
@@ -4115,7 +4182,7 @@ namespace EnvirInfoSys
             this.dockPanel2_Container.Controls.Add(this.panelControl1);
             this.dockPanel2_Container.Location = new System.Drawing.Point(9, 33);
             this.dockPanel2_Container.Name = "dockPanel2_Container";
-            this.dockPanel2_Container.Size = new System.Drawing.Size(72, 964);
+            this.dockPanel2_Container.Size = new System.Drawing.Size(72, 911);
             this.dockPanel2_Container.TabIndex = 0;
             // 
             // panelControl1
@@ -4125,7 +4192,7 @@ namespace EnvirInfoSys
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelControl1.Location = new System.Drawing.Point(0, 0);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(72, 964);
+            this.panelControl1.Size = new System.Drawing.Size(72, 911);
             this.panelControl1.TabIndex = 0;
             // 
             // flowLayoutPanel1
@@ -4134,7 +4201,7 @@ namespace EnvirInfoSys
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(2, 2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(68, 960);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(68, 907);
             this.flowLayoutPanel1.TabIndex = 34;
             // 
             // pbMove
@@ -4151,6 +4218,9 @@ namespace EnvirInfoSys
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.simpleButton2);
+            this.panel2.Controls.Add(this.panelControl3);
+            this.panel2.Controls.Add(this.panelControl2);
             this.panel2.Controls.Add(this.pictureBox3);
             this.panel2.Controls.Add(this.pictureBox2);
             this.panel2.Controls.Add(this.pictureBox1);
@@ -4158,8 +4228,95 @@ namespace EnvirInfoSys
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(2, 31);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1421, 970);
+            this.panel2.Size = new System.Drawing.Size(1421, 917);
             this.panel2.TabIndex = 2;
+            // 
+            // simpleButton2
+            // 
+            this.simpleButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.simpleButton2.Location = new System.Drawing.Point(1182, 127);
+            this.simpleButton2.Name = "simpleButton2";
+            this.simpleButton2.Size = new System.Drawing.Size(112, 34);
+            this.simpleButton2.TabIndex = 6;
+            this.simpleButton2.Text = "simpleButton2";
+            this.simpleButton2.Visible = false;
+            // 
+            // panelControl3
+            // 
+            this.panelControl3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelControl3.Controls.Add(this.comboBoxEdit2);
+            this.panelControl3.Controls.Add(this.pictureBox5);
+            this.panelControl3.Location = new System.Drawing.Point(819, 81);
+            this.panelControl3.Name = "panelControl3";
+            this.panelControl3.Size = new System.Drawing.Size(475, 45);
+            this.panelControl3.TabIndex = 5;
+            this.panelControl3.Visible = false;
+            // 
+            // comboBoxEdit2
+            // 
+            this.comboBoxEdit2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxEdit2.Location = new System.Drawing.Point(43, 2);
+            this.comboBoxEdit2.MenuManager = this.barManager1;
+            this.comboBoxEdit2.Name = "comboBoxEdit2";
+            this.comboBoxEdit2.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxEdit2.Properties.Appearance.Options.UseFont = true;
+            this.comboBoxEdit2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.comboBoxEdit2.Size = new System.Drawing.Size(430, 38);
+            this.comboBoxEdit2.TabIndex = 8;
+            // 
+            // pictureBox5
+            // 
+            this.pictureBox5.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pictureBox5.Location = new System.Drawing.Point(2, 2);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(41, 41);
+            this.pictureBox5.TabIndex = 7;
+            this.pictureBox5.TabStop = false;
+            // 
+            // panelControl2
+            // 
+            this.panelControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelControl2.Controls.Add(this.comboBoxEdit1);
+            this.panelControl2.Controls.Add(this.simpleButton1);
+            this.panelControl2.Controls.Add(this.pictureBox4);
+            this.panelControl2.Location = new System.Drawing.Point(819, 35);
+            this.panelControl2.Name = "panelControl2";
+            this.panelControl2.Size = new System.Drawing.Size(500, 45);
+            this.panelControl2.TabIndex = 4;
+            this.panelControl2.Visible = false;
+            // 
+            // comboBoxEdit1
+            // 
+            this.comboBoxEdit1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxEdit1.Location = new System.Drawing.Point(43, 2);
+            this.comboBoxEdit1.MenuManager = this.barManager1;
+            this.comboBoxEdit1.Name = "comboBoxEdit1";
+            this.comboBoxEdit1.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxEdit1.Properties.Appearance.Options.UseFont = true;
+            this.comboBoxEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.comboBoxEdit1.Size = new System.Drawing.Size(430, 38);
+            this.comboBoxEdit1.TabIndex = 7;
+            // 
+            // simpleButton1
+            // 
+            this.simpleButton1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.simpleButton1.Location = new System.Drawing.Point(473, 2);
+            this.simpleButton1.Name = "simpleButton1";
+            this.simpleButton1.Size = new System.Drawing.Size(25, 41);
+            this.simpleButton1.TabIndex = 8;
+            this.simpleButton1.Text = "simpleButton1";
+            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pictureBox4.Location = new System.Drawing.Point(2, 2);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(41, 41);
+            this.pictureBox4.TabIndex = 7;
+            this.pictureBox4.TabStop = false;
             // 
             // pictureBox3
             // 
@@ -4206,7 +4363,7 @@ namespace EnvirInfoSys
             this.mapHelper1.port = 0;
             this.mapHelper1.roadmappath = null;
             this.mapHelper1.satellitemappath = null;
-            this.mapHelper1.Size = new System.Drawing.Size(1421, 970);
+            this.mapHelper1.Size = new System.Drawing.Size(1421, 917);
             this.mapHelper1.TabIndex = 0;
             this.mapHelper1.webpath = null;
             this.mapHelper1.AddMarkerFinished += new MapHelper.MapHelper.DlAddMarkerFinished(this.mapHelper1_AddMarkerFinished);
@@ -4231,7 +4388,7 @@ namespace EnvirInfoSys
             this.groupControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupControl1.Location = new System.Drawing.Point(200, 64);
             this.groupControl1.Name = "groupControl1";
-            this.groupControl1.Size = new System.Drawing.Size(1425, 1003);
+            this.groupControl1.Size = new System.Drawing.Size(1425, 950);
             this.groupControl1.TabIndex = 24;
             this.groupControl1.Text = "地图显示";
             // 
@@ -4272,10 +4429,10 @@ namespace EnvirInfoSys
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1712, 1103);
+            this.ClientSize = new System.Drawing.Size(1712, 1050);
             this.Controls.Add(this.groupControl1);
-            this.Controls.Add(this.dockPanel2);
             this.Controls.Add(this.dockPanel1);
+            this.Controls.Add(this.dockPanel2);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
@@ -4299,6 +4456,14 @@ namespace EnvirInfoSys
             this.panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbMove)).EndInit();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).EndInit();
+            this.panelControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
+            this.panelControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit1.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
