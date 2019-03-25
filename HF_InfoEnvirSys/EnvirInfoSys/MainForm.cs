@@ -6,7 +6,6 @@ using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraSplashScreen;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
-using MapHelper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +18,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Timers;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -67,6 +67,8 @@ namespace EnvirInfoSys
 		private Dictionary<string, string> Icon_JDCode;
 
 		private Dictionary<string, string> Icon_Name;
+
+        private List<string> Icon_List;
 
 		private string[] GL_PGUID;
 
@@ -139,6 +141,8 @@ namespace EnvirInfoSys
 		private System.Timers.Timer NetTimer = null;
 
 		private int borderlines = 0;
+
+        private int guidelines = 0;
 
 		private PictureBox currCtl = null;
 
@@ -223,7 +227,7 @@ namespace EnvirInfoSys
 
 		private GroupControl groupControl1;
 
-		private Panel panel2;
+		private System.Windows.Forms.Panel panel2;
 
 		private BarDockControl barDockControlLeft;
 
@@ -326,11 +330,9 @@ namespace EnvirInfoSys
         private PictureBox pictureBox2;
         private PanelControl panelControl3;
         private PanelControl panelControl2;
-        private PictureBox pictureBox5;
-        private SimpleButton simpleButton1;
-        private PictureBox pictureBox4;
-        private SimpleButton simpleButton2;
         private ComboBoxEdit comboBoxEdit2;
+        private PictureBox pictureBox5;
+        private PictureBox pictureBox4;
         private ComboBoxEdit comboBoxEdit1;
         private BarStaticItem barStaticItem2;
 
@@ -490,6 +492,8 @@ namespace EnvirInfoSys
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox5.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.Load(WorkPath + "icon\\导航.png");
             ToolTip toolTip = new ToolTip
             {
@@ -514,6 +518,22 @@ namespace EnvirInfoSys
                 AutoPopDelay = 10000
             };
             toolTip.SetToolTip(pictureBox3, "卫星图");
+            pictureBox4.Load(WorkPath + "icon\\搜索.png");
+            toolTip = new ToolTip
+            {
+                InitialDelay = 10,
+                ReshowDelay = 10,
+                AutoPopDelay = 10000
+            };
+            toolTip.SetToolTip(pictureBox4, "搜索");
+            pictureBox5.Load(WorkPath + "icon\\路线.png");
+            toolTip = new ToolTip
+            {
+                InitialDelay = 10,
+                ReshowDelay = 10,
+                AutoPopDelay = 10000
+            };
+            toolTip.SetToolTip(pictureBox5, "路线");
         }
 
 		private void MainForm_Shown(object sender, EventArgs e)
@@ -786,7 +806,7 @@ namespace EnvirInfoSys
 					pictureBox.Width = 32;
 					pictureBox.Height = 32;
 					pictureBox.Click += Icon_Click;
-					pictureBox.BorderStyle = BorderStyle.Fixed3D;
+					pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 					if (Permission)
 					{
 						pictureBox.MouseDown += Icon_MouseDown;
@@ -796,7 +816,7 @@ namespace EnvirInfoSys
 					pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
 					pictureBox.Name = key;
 					FileStream fileStream = new FileStream(str + key, FileMode.Open, FileAccess.Read);
-					pictureBox.Image = Image.FromStream(fileStream);
+					pictureBox.Image = System.Drawing.Image.FromStream(fileStream);
 					flowLayoutPanel1.Controls.Add(pictureBox);
 					fileStream.Close();
 					fileStream.Dispose();
@@ -811,13 +831,13 @@ namespace EnvirInfoSys
             };
             toolTip2.SetToolTip(pictureBox_2, "全选");
             pictureBox_2.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox_2.BorderStyle = BorderStyle.Fixed3D;
+            pictureBox_2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             pictureBox_2.Width = 32;
             pictureBox_2.Height = 32;
             pictureBox_2.Click += SelectAll_Click;
             pictureBox_2.Name = "全选";
 			FileStream fileStream2 = new FileStream(WorkPath + "icon\\全选.png", FileMode.Open, FileAccess.Read);
-            pictureBox_2.Image = Image.FromStream(fileStream2);
+            pictureBox_2.Image = System.Drawing.Image.FromStream(fileStream2);
 			flowLayoutPanel1.Controls.Add(pictureBox_2);
 			fileStream2.Close();
 			fileStream2.Dispose();
@@ -835,7 +855,7 @@ namespace EnvirInfoSys
             pictureBox_2.Click += CancelAll_Click;
             pictureBox_2.Name = "全不选";
 			fileStream2 = new FileStream(WorkPath + "icon\\全不选.png", FileMode.Open, FileAccess.Read);
-            pictureBox_2.Image = Image.FromStream(fileStream2);
+            pictureBox_2.Image = System.Drawing.Image.FromStream(fileStream2);
 			flowLayoutPanel1.Controls.Add(pictureBox_2);
 			fileStream2.Close();
 			fileStream2.Dispose();
@@ -1141,6 +1161,7 @@ namespace EnvirInfoSys
 
 		private void ToolStripItem_Click(object sender, ItemClickEventArgs e)
 		{
+            Close_Guider();
 			Operator_GUID = "";
 			select_vector = false;
 			BarManager barManager = (BarManager)sender;
@@ -1193,13 +1214,13 @@ namespace EnvirInfoSys
 			{
 				if (control.Visible)
 				{
-					if (control.BorderStyle == BorderStyle.Fixed3D)
+					if (control.BorderStyle == System.Windows.Forms.BorderStyle.Fixed3D)
 					{
 						string text2 = str + control.Name;
 						text2 = text2.Replace('\\', '/');
 						mapHelper1.SetMarkerVisibleByIconPath(text2, visible: true);
 					}
-					else if (control.BorderStyle == BorderStyle.None)
+					else if (control.BorderStyle == System.Windows.Forms.BorderStyle.None)
 					{
 						string text2 = str + control.Name;
 						text2 = text2.Replace('\\', '/');
@@ -1495,7 +1516,10 @@ namespace EnvirInfoSys
 
 		private void treeList1_FocusedNodeChanged(object sender, FocusedNodeChangedEventArgs e)
 		{
-			TreeListNode focusedNode = treeList1.FocusedNode;
+            Close_Guider();
+
+
+            TreeListNode focusedNode = treeList1.FocusedNode;
 			Operator_GUID = "";
 			select_vector = false;
 			if (e.Node == null)
@@ -1602,7 +1626,7 @@ namespace EnvirInfoSys
 					{
 						string text = str + control.Name;
 						text = text.Replace('\\', '/');
-						if (control.BorderStyle == BorderStyle.Fixed3D && control.Tag.ToString() == "1")
+						if (control.BorderStyle == System.Windows.Forms.BorderStyle.Fixed3D && control.Tag.ToString() == "1")
 						{
 							mapHelper1.SetMarkerVisibleByIconPath(text, visible: true);
 						}
@@ -1622,36 +1646,17 @@ namespace EnvirInfoSys
 
 		private void Get_Icon_List()
 		{
+            Icon_List = new List<string>();
+            if (Level_Icon.ContainsKey(levelguid) && GX_Icon.ContainsKey(FLguid))
+                Icon_List = Level_Icon[levelguid].Intersect(GX_Icon[FLguid]).ToList();
 			string text = WorkPath + "ICONDER\\b_PNGICON\\";
             System.Collections.IList list = flowLayoutPanel1.Controls;
             for (int i = 0; i < list.Count; i++)
 			{
                 PictureBox control = (PictureBox)list[i];
-                control.Visible = control.Name == "全选" || control.Name == "全不选" || Check_Icon(control.Name) ? true : false;
-                control.Tag = control.Name == "全选" || control.Name == "全不选" || Check_Icon(control.Name) ? "1" : "0";
+                control.Visible = control.Name == "全选" || control.Name == "全不选" || Icon_List.Contains(control.Name.Substring(0, 38)) ? true : false;
+                control.Tag = control.Name == "全选" || control.Name == "全不选" || Icon_List.Contains(control.Name.Substring(0, 38)) ? "1" : "0";
             }
-		}
-
-		private bool Check_Icon(string iconguid)
-		{
-			if (!Level_Icon.ContainsKey(levelguid))
-			{
-				return false;
-			}
-			List<string> list = Level_Icon[levelguid];
-			if (FLguid != "")
-			{
-				if (!GX_Icon.ContainsKey(FLguid))
-				{
-					return false;
-				}
-				list = list.Intersect(GX_Icon[FLguid]).ToList();
-			}
-			if (list.Contains(iconguid.Substring(0, 38)))
-			{
-				return true;
-			}
-			return false;
 		}
 
 		private void SelectAll_Click(object sender, EventArgs e)
@@ -1663,11 +1668,11 @@ namespace EnvirInfoSys
 				{
 					if (control.Name == "全不选")
 					{
-						control.BorderStyle = BorderStyle.None;
+						control.BorderStyle = System.Windows.Forms.BorderStyle.None;
 					}
 					else
 					{
-						control.BorderStyle = BorderStyle.Fixed3D;
+						control.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 						if (control.Name != "全选")
 						{
 							string text = str + control.Name;
@@ -1686,11 +1691,11 @@ namespace EnvirInfoSys
 			{
 				if (control.Name == "全不选")
 				{
-					control.BorderStyle = BorderStyle.Fixed3D;
+					control.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 				}
 				else
 				{
-					control.BorderStyle = BorderStyle.None;
+					control.BorderStyle = System.Windows.Forms.BorderStyle.None;
 					if (control.Name != "全选")
 					{
 						string text = str + control.Name;
@@ -1757,16 +1762,16 @@ namespace EnvirInfoSys
 			string str = WorkPath + "ICONDER\\b_PNGICON\\";
 			currCtl.Visible = false;
 			PictureBox pictureBox = (PictureBox)sender;
-			if (pictureBox.BorderStyle == BorderStyle.Fixed3D)
+			if (pictureBox.BorderStyle == System.Windows.Forms.BorderStyle.Fixed3D)
 			{
-				pictureBox.BorderStyle = BorderStyle.None;
+				pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
 				string text = str + pictureBox.Name;
 				text = text.Replace('\\', '/');
 				mapHelper1.SetMarkerVisibleByIconPath(text, visible: false);
 			}
-			else if (pictureBox.BorderStyle == BorderStyle.None)
+			else if (pictureBox.BorderStyle == System.Windows.Forms.BorderStyle.None)
 			{
-				pictureBox.BorderStyle = BorderStyle.Fixed3D;
+				pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 				string text = str + pictureBox.Name;
 				text = text.Replace('\\', '/');
 				mapHelper1.SetMarkerVisibleByIconPath(text, visible: true);
@@ -1779,25 +1784,25 @@ namespace EnvirInfoSys
 				{
 					if (flag)
 					{
-						control.BorderStyle = BorderStyle.Fixed3D;
+						control.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 					}
 					else
 					{
-						control.BorderStyle = BorderStyle.None;
+						control.BorderStyle = System.Windows.Forms.BorderStyle.None;
 					}
 				}
 				else if (control.Name == "全不选")
 				{
 					if (flag2)
 					{
-						control.BorderStyle = BorderStyle.Fixed3D;
+						control.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 					}
 					else
 					{
-						control.BorderStyle = BorderStyle.None;
+						control.BorderStyle = System.Windows.Forms.BorderStyle.None;
 					}
 				}
-				else if (control.BorderStyle == BorderStyle.Fixed3D)
+				else if (control.BorderStyle == System.Windows.Forms.BorderStyle.Fixed3D)
 				{
 					flag2 = false;
 				}
@@ -2324,6 +2329,11 @@ namespace EnvirInfoSys
             Dictionary<string, string> icon_name = new Dictionary<string, string>();
             foreach (string idguid in idLst)
             {
+                if (idguid == "Guide_Lines")
+                {
+                    icon_name[idguid] = "导航路线";
+                    continue;
+                }
                 Dictionary<string, object> tmp_msg = mapHelper1.GetMarkerParams(idguid);
                 icon_name[idguid] = tmp_msg["name"].ToString();
             }
@@ -2332,7 +2342,11 @@ namespace EnvirInfoSys
                 iclstfm.guid_name = icon_name;
                 iclstfm.StartPosition = FormStartPosition.Manual;
                 iclstfm.Left = Control.MousePosition.X;
+                if (iclstfm.Left + iclstfm.Width > mapHelper1.Left + mapHelper1.Width)
+                    iclstfm.Left -= iclstfm.Width;
                 iclstfm.Top = Control.MousePosition.Y;
+                if (iclstfm.Top + iclstfm.Height > mapHelper1.Top + mapHelper1.Height)
+                    iclstfm.Top -= iclstfm.Height;
                 if (iclstfm.ShowDialog() == DialogResult.OK)
                     markerguid = iclstfm.markerguid;
                 else
@@ -2343,6 +2357,11 @@ namespace EnvirInfoSys
                 List<string> list = new List<string>(icon_name.Keys);
                 if (list.Count > 0)
                     markerguid = list[0];
+            }
+
+            if (markerguid == "Guide_Lines")
+            {
+                return;
             }
 
             Dictionary<string, object> marker_msg = mapHelper1.GetMarkerParams(markerguid);
@@ -2675,7 +2694,7 @@ namespace EnvirInfoSys
 							{
 								string text = str + control.Name;
 								text = text.Replace('\\', '/');
-								if (control.BorderStyle == BorderStyle.Fixed3D && control.Visible)
+								if (control.BorderStyle == System.Windows.Forms.BorderStyle.Fixed3D && control.Visible)
 								{
 									mapHelper1.SetMarkerVisibleByIconPath(text, visible: true);
 								}
@@ -3095,7 +3114,7 @@ namespace EnvirInfoSys
 				{
 					string text = str + control.Name;
 					text = text.Replace('\\', '/');
-					if (control.BorderStyle == BorderStyle.Fixed3D && control.Visible)
+					if (control.BorderStyle == System.Windows.Forms.BorderStyle.Fixed3D && control.Visible)
 					{
 						mapHelper1.SetMarkerVisibleByIconPath(text, visible: true);
 					}
@@ -3217,7 +3236,7 @@ namespace EnvirInfoSys
 					{
 						string text2 = str + control.Name;
 						text2 = text2.Replace('\\', '/');
-						if (control.BorderStyle == BorderStyle.Fixed3D && control.Visible)
+						if (control.BorderStyle == System.Windows.Forms.BorderStyle.Fixed3D && control.Visible)
 						{
 							mapHelper1.SetMarkerVisibleByIconPath(text2, visible: true);
 						}
@@ -3295,7 +3314,7 @@ namespace EnvirInfoSys
 
         private int cnt = 0;
 
-        private void ShowPerson(Map_Person person)
+        private void ShowPerson(Map_Person person, bool listchange)
         {
             string iconpath = WorkPath + "icon\\人.png";
             Dictionary<string, object> dic = new Dictionary<string, object>
@@ -3312,13 +3331,24 @@ namespace EnvirInfoSys
             };
             mapHelper1.addMarker(string.Concat(person.lat), string.Concat(person.lng), person.name, canedit: false, iconpath, null, person.id);
             mapHelper1.DrawWaver(person.id, dic, person.id + "_waver");
+            if (listchange)
+            {
+                ListItem listItem = new ListItem(person.name, person.id);
+                comboBoxEdit1.Properties.Items.Add(listItem);
+            }
+            //comboBoxEdit2.Properties.Items.Add(listItem);
             ++cnt;
         }
 
-        private void HidePerson(string personid)
+        private void HidePerson(string personid, bool listchange)
         {
             mapHelper1.deleteMarker(Person_GUID[personid].id + "_waver");
             mapHelper1.deleteMarker(Person_GUID[personid].id);
+            if (listchange)
+            {
+                ListItem listItem = new ListItem(Person_GUID[personid].name, Person_GUID[personid].id);
+                comboBoxEdit1.Properties.Items.Remove(listItem);
+            }
             --cnt;
         }
 
@@ -3420,7 +3450,7 @@ namespace EnvirInfoSys
                 if (Check_Person(Person_GUID[text]))
                 {
                     Person_GUID[text].vis = true;
-                    ShowPerson(Person_GUID[text]);
+                    ShowPerson(Person_GUID[text], true);
                 }
                 else
                     return;
@@ -3430,13 +3460,13 @@ namespace EnvirInfoSys
                 if (!Check_Person(Person_GUID[text]))
                 {
                     Person_GUID[text].vis = false;
-                    HidePerson(Person_GUID[text].id);
+                    HidePerson(Person_GUID[text].id, true);
                     return;
                 }
             }
 
-            HidePerson(Person_GUID[text].id);
-            ShowPerson(Person_GUID[text]);
+            HidePerson(Person_GUID[text].id, false);
+            ShowPerson(Person_GUID[text], false);
         }
 
         private bool Check_Person(Map_Person map_Person)
@@ -3596,23 +3626,51 @@ namespace EnvirInfoSys
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
+            if (!Before_ShowMap)
+                return;
             MouseEventArgs Mouse_e = (MouseEventArgs)e;
             if (Mouse_e.Button == MouseButtons.Left)
             {
                 if (panelControl2.Visible == false)
                 {
-                    simpleButton1.Text = "v";
+                    comboBoxEdit1.Properties.Items.Clear();
+                    comboBoxEdit2.Properties.Items.Clear();
+                    /*string list_icon = "(";
+                    foreach (string icon_id in Icon_List)
+                        list_icon += "'" + icon_id + "',";
+                    list_icon = list_icon.Remove(list_icon.Length - 1, 1);
+                    list_icon += ")";
+                    string sql = "select PGUID, MAKRENAME from ENVIRICONDATA_H0001Z000E00 where ISDELETE = 0 and UNITEID = '" + UnitID + "' and ICONGUID in " + list_icon;
+                    DataTable dt = FileReader.often_ahp.ExecuteDataTable(sql);
+                    for (int i = 0; i < dt.Rows.Count; ++i)
+                    {
+                        ListItem listItem = new ListItem(dt.Rows[i]["MAKRENAME"].ToString(), dt.Rows[i]["PGUID"].ToString());
+                        comboBoxEdit1.Properties.Items.Add(listItem);
+                        comboBoxEdit2.Properties.Items.Add(listItem);
+                    }*/
+                    List<string>icon_guid = mapHelper1.GetVisibleIconPath();
+                    Dictionary<string, object> icon_info = null;
+                    foreach(string iconid in icon_guid)
+                    {
+                        icon_info = mapHelper1.GetMarkerParams(iconid);
+                        if (icon_info == null)
+                            continue;
+                        ListItem listItem = new ListItem(icon_info["name"].ToString(), iconid);
+                        comboBoxEdit1.Properties.Items.Add(listItem);
+                        comboBoxEdit2.Properties.Items.Add(listItem);
+                    }
+                    //simpleButton1.Text = "▼";
                     panelControl2.Visible = true;
-                    simpleButton2.Top = panelControl2.Top + panelControl2.Height;
-                    simpleButton2.Text = "查找位置";
-                    simpleButton2.Visible = true;
+                    //simpleButton2.Top = panelControl2.Top + panelControl2.Height;
+                    //simpleButton2.Text = "查找位置";
+                    //simpleButton2.Visible = true;
                 }
                 else
                 {
-                    panelControl2.Visible = false;
-                    panelControl3.Visible = false;
-                    simpleButton2.Visible = false;
+                    Close_Guider();
                 }
+                comboBoxEdit1.SelectedIndex = -1;
+                comboBoxEdit2.SelectedIndex = -1;
             }
         }
 
@@ -3636,22 +3694,214 @@ namespace EnvirInfoSys
             }
         }
 
-        private void simpleButton1_Click(object sender, EventArgs e)
+
+        private void pictureBox4_MouseDown(object sender, MouseEventArgs e)
         {
-            if (simpleButton1.Text == "v")
+            pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void pictureBox4_MouseUp(object sender, MouseEventArgs e)
+        {
+            pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            if (panelControl3.Visible == false)
             {
-                simpleButton1.Text = "^";
+                ListItem From_Point = (ListItem)comboBoxEdit1.SelectedItem;
+                Dictionary<string, object> From_Info = mapHelper1.GetMarkerParams(From_Point.Value);
+                double From_lat, From_lng;
+                From_lat = double.Parse(From_Info["lat"].ToString());
+                From_lng = double.Parse(From_Info["lng"].ToString());
+                mapHelper1.SetMapCenter(From_lat, From_lng);
+            }
+            else
+            {
+                mapHelper1.deleteMarker("Guide_Lines");
+                if (panelControl3.Visible == false)
+                {
+                    if (comboBoxEdit1.SelectedIndex == -1)
+                    {
+                        XtraMessageBox.Show("尚未选择定位单位或人员");
+                        return;
+                    }
+                    ListItem Form_Point = (ListItem)comboBoxEdit1.SelectedItem;
+                    mapHelper1.SetMarkerBounce(Form_Point.Value, true);
+                }
+                else
+                {
+                    if (comboBoxEdit1.SelectedIndex == -1 || comboBoxEdit2.SelectedIndex == -1)
+                    {
+                        XtraMessageBox.Show("尚未选择定位单位或人员");
+                        return;
+                    }
+                    ListItem From_Point = (ListItem)comboBoxEdit1.SelectedItem;
+                    ListItem To_Point = (ListItem)comboBoxEdit2.SelectedItem;
+
+                    Dictionary<string, object> Form_Info = mapHelper1.GetMarkerParams(From_Point.Value);
+                    Dictionary<string, object> To_Info = mapHelper1.GetMarkerParams(To_Point.Value);
+                    double From_lat, From_lng, To_lat, To_lng;
+                    From_lat = double.Parse(Form_Info["lat"].ToString());
+                    From_lng = double.Parse(Form_Info["lng"].ToString());
+                    To_lat = double.Parse(To_Info["lat"].ToString());
+                    To_lng = double.Parse(To_Info["lng"].ToString());
+                    mapHelper1.GetDrivenPath(From_lng, From_lat, To_lng, To_lat);
+                }
+            }
+        }
+
+
+        private void pictureBox5_MouseDown(object sender, MouseEventArgs e)
+        {
+            pictureBox5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+        }
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox5_MouseUp(object sender, MouseEventArgs e)
+        {
+            pictureBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            if (panelControl3.Visible == false)
+            {
+                panelControl3.Visible = true;
+                pictureBox5.Load(WorkPath + "icon\\取消.png");
+            }
+            else
+            {
+                panelControl3.Visible = false;
+                pictureBox5.Load(WorkPath + "icon\\路线.png");
+            }
+        }
+
+        /*private void simpleButton1_Click(object sender, EventArgs e)
+        {
+            if (simpleButton1.Text == "▼")
+            {
+                simpleButton1.Text = "▲";
                 panelControl3.Visible = true;
                 simpleButton2.Top = panelControl3.Top + panelControl3.Height;
                 simpleButton2.Text = "查询导航";
             }
             else
             {
-                simpleButton1.Text = "v";
+                simpleButton1.Text = "▼";
                 panelControl3.Visible = false;
                 simpleButton2.Top = panelControl2.Top + panelControl2.Height;
                 simpleButton2.Text = "查找位置";
+                comboBoxEdit2.SelectedIndex = -1;
             }
+        }
+
+        private void simpleButton2_Click(object sender, EventArgs e)
+        {
+            mapHelper1.deleteMarker("Guide_Lines");
+            if (panelControl3.Visible == false)
+            {
+                if (comboBoxEdit1.SelectedIndex == -1)
+                {
+                    XtraMessageBox.Show("尚未选择定位单位或人员");
+                    return;
+                }
+                ListItem Form_Point = (ListItem)comboBoxEdit1.SelectedItem;
+                mapHelper1.SetMarkerBounce(Form_Point.Value, true);
+            }
+            else
+            {
+                if (comboBoxEdit1.SelectedIndex == -1 || comboBoxEdit2.SelectedIndex == -1)
+                {
+                    XtraMessageBox.Show("尚未选择定位单位或人员");
+                    return;
+                }
+                ListItem Form_Point = (ListItem)comboBoxEdit1.SelectedItem;
+                ListItem To_Point = (ListItem)comboBoxEdit2.SelectedItem;
+
+                Dictionary<string, object> Form_Info = mapHelper1.GetMarkerParams(Form_Point.Value);
+                Dictionary<string, object> To_Info = mapHelper1.GetMarkerParams(To_Point.Value);
+                double Form_lat, Form_lng, To_lat, To_lng;
+                Form_lat = double.Parse(Form_Info["lat"].ToString());
+                Form_lng = double.Parse(Form_Info["lng"].ToString());
+                To_lat = double.Parse(To_Info["lat"].ToString());
+                To_lng = double.Parse(To_Info["lng"].ToString());
+                mapHelper1.GetDrivenPath(Form_lng, Form_lat, To_lng, To_lat);
+            }
+        }*/
+
+        private void mapHelper1_DrivenPathReady(List<double[]> pLst)
+        {
+            /*Dictionary<string, object> pdic = new Dictionary<string, object>
+            {
+                { "color", "#0000ff" },
+                { "width", 2.0 },
+                { "opacity", 0.6 },
+                { "node", false },
+                { "nodecolor", "#ff0000" },
+                { "nodewidth", 1.0 },
+                { "nodefillcolor", "#ffffff" },
+                { "noderadius", 10.0 },
+                { "step", 100.0 },
+                { "nodes", pLst }
+            };*/
+            //mapHelper1.DrawPath(pdic, "Guide_Lines");
+
+            Dictionary<string, object> ldic = new Dictionary<string, object>
+            {
+                { "color", "#0000ff" },
+                { "weight", 2 },
+                { "points", pLst }
+            };
+            guidelines = ldic.Count;
+            mapHelper1.DrawLine(ldic, "Guide_Lines");
+        }
+
+        private void comboBoxEdit1_EditValueChanging(object sender, ChangingEventArgs e)
+        {
+            ListItem listitem = (ListItem)comboBoxEdit1.SelectedItem;
+            if (listitem != null)
+                mapHelper1.SetMarkerBounce(listitem.Value, false);
+        }
+
+        private void comboBoxEdit2_EditValueChanging(object sender, ChangingEventArgs e)
+        {
+            ListItem listitem = (ListItem)comboBoxEdit2.SelectedItem;
+            if (listitem != null)
+                mapHelper1.SetMarkerBounce(listitem.Value, false);
+        }
+
+        private void comboBoxEdit1_EditValueChanged(object sender, EventArgs e)
+        {
+            ListItem listitem = (ListItem)comboBoxEdit1.SelectedItem;
+            if (listitem != null)
+                mapHelper1.SetMarkerBounce(listitem.Value, true);
+        }
+
+        private void comboBoxEdit2_EditValueChanged(object sender, EventArgs e)
+        {
+            ListItem listitem = (ListItem)comboBoxEdit2.SelectedItem;
+            if (listitem != null)
+                mapHelper1.SetMarkerBounce(listitem.Value, true);
+        }
+
+        private void Close_Guider()
+        {
+            if (!Before_ShowMap)
+                return;
+            panelControl2.Visible = false;
+            panelControl3.Visible = false;
+            pictureBox5.Load(WorkPath + "icon\\路线.png");
+            //simpleButton2.Visible = false;
+            //for (int i = 0; i < guidelines; ++ i)
+            mapHelper1.deleteMarker("Guide_Lines");
+            ListItem listitem = (ListItem)comboBoxEdit1.SelectedItem;
+            if (listitem != null)
+                mapHelper1.SetMarkerBounce(listitem.Value, false);
+            listitem = (ListItem)comboBoxEdit2.SelectedItem;
+            if (listitem != null)
+                mapHelper1.SetMarkerBounce(listitem.Value, false);
         }
 
         private void InitializeComponent()
@@ -3707,13 +3957,11 @@ namespace EnvirInfoSys
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.pbMove = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
             this.panelControl3 = new DevExpress.XtraEditors.PanelControl();
             this.comboBoxEdit2 = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.comboBoxEdit1 = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
@@ -3740,10 +3988,10 @@ namespace EnvirInfoSys
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).BeginInit();
             this.panelControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit2.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             this.panelControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit1.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -4218,7 +4466,6 @@ namespace EnvirInfoSys
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.simpleButton2);
             this.panel2.Controls.Add(this.panelControl3);
             this.panel2.Controls.Add(this.panelControl2);
             this.panel2.Controls.Add(this.pictureBox3);
@@ -4231,99 +4478,96 @@ namespace EnvirInfoSys
             this.panel2.Size = new System.Drawing.Size(1421, 917);
             this.panel2.TabIndex = 2;
             // 
-            // simpleButton2
-            // 
-            this.simpleButton2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.simpleButton2.Location = new System.Drawing.Point(1182, 127);
-            this.simpleButton2.Name = "simpleButton2";
-            this.simpleButton2.Size = new System.Drawing.Size(112, 34);
-            this.simpleButton2.TabIndex = 6;
-            this.simpleButton2.Text = "simpleButton2";
-            this.simpleButton2.Visible = false;
-            // 
             // panelControl3
             // 
             this.panelControl3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelControl3.Controls.Add(this.comboBoxEdit2);
-            this.panelControl3.Controls.Add(this.pictureBox5);
-            this.panelControl3.Location = new System.Drawing.Point(819, 81);
+            this.panelControl3.Location = new System.Drawing.Point(761, 81);
             this.panelControl3.Name = "panelControl3";
-            this.panelControl3.Size = new System.Drawing.Size(475, 45);
+            this.panelControl3.Size = new System.Drawing.Size(476, 45);
             this.panelControl3.TabIndex = 5;
             this.panelControl3.Visible = false;
             // 
             // comboBoxEdit2
             // 
             this.comboBoxEdit2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboBoxEdit2.Location = new System.Drawing.Point(43, 2);
+            this.comboBoxEdit2.Location = new System.Drawing.Point(2, 2);
             this.comboBoxEdit2.MenuManager = this.barManager1;
             this.comboBoxEdit2.Name = "comboBoxEdit2";
             this.comboBoxEdit2.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxEdit2.Properties.Appearance.Options.UseFont = true;
             this.comboBoxEdit2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.comboBoxEdit2.Size = new System.Drawing.Size(430, 38);
+            this.comboBoxEdit2.Properties.HighlightedItemStyle = DevExpress.XtraEditors.HighlightStyle.Skinned;
+            this.comboBoxEdit2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.comboBoxEdit2.Size = new System.Drawing.Size(472, 38);
             this.comboBoxEdit2.TabIndex = 8;
-            // 
-            // pictureBox5
-            // 
-            this.pictureBox5.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pictureBox5.Location = new System.Drawing.Point(2, 2);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(41, 41);
-            this.pictureBox5.TabIndex = 7;
-            this.pictureBox5.TabStop = false;
+            this.comboBoxEdit2.EditValueChanged += new System.EventHandler(this.comboBoxEdit2_EditValueChanged);
+            this.comboBoxEdit2.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.comboBoxEdit2_EditValueChanging);
             // 
             // panelControl2
             // 
             this.panelControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelControl2.Controls.Add(this.comboBoxEdit1);
-            this.panelControl2.Controls.Add(this.simpleButton1);
+            this.panelControl2.Controls.Add(this.pictureBox5);
             this.panelControl2.Controls.Add(this.pictureBox4);
-            this.panelControl2.Location = new System.Drawing.Point(819, 35);
+            this.panelControl2.Location = new System.Drawing.Point(761, 35);
             this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(500, 45);
+            this.panelControl2.Size = new System.Drawing.Size(558, 45);
             this.panelControl2.TabIndex = 4;
             this.panelControl2.Visible = false;
             // 
             // comboBoxEdit1
             // 
             this.comboBoxEdit1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboBoxEdit1.Location = new System.Drawing.Point(43, 2);
+            this.comboBoxEdit1.Location = new System.Drawing.Point(2, 2);
             this.comboBoxEdit1.MenuManager = this.barManager1;
             this.comboBoxEdit1.Name = "comboBoxEdit1";
             this.comboBoxEdit1.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxEdit1.Properties.Appearance.Options.UseFont = true;
             this.comboBoxEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.comboBoxEdit1.Size = new System.Drawing.Size(430, 38);
-            this.comboBoxEdit1.TabIndex = 7;
+            this.comboBoxEdit1.Properties.HighlightedItemStyle = DevExpress.XtraEditors.HighlightStyle.Skinned;
+            this.comboBoxEdit1.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.comboBoxEdit1.Size = new System.Drawing.Size(472, 38);
+            this.comboBoxEdit1.TabIndex = 9;
+            this.comboBoxEdit1.EditValueChanged += new System.EventHandler(this.comboBoxEdit1_EditValueChanged);
+            this.comboBoxEdit1.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.comboBoxEdit1_EditValueChanging);
             // 
-            // simpleButton1
+            // pictureBox5
             // 
-            this.simpleButton1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.simpleButton1.Location = new System.Drawing.Point(473, 2);
-            this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(25, 41);
-            this.simpleButton1.TabIndex = 8;
-            this.simpleButton1.Text = "simpleButton1";
-            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
+            this.pictureBox5.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.pictureBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox5.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pictureBox5.Location = new System.Drawing.Point(474, 2);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(41, 41);
+            this.pictureBox5.TabIndex = 8;
+            this.pictureBox5.TabStop = false;
+            this.pictureBox5.Click += new System.EventHandler(this.pictureBox5_Click);
+            this.pictureBox5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox5_MouseDown);
+            this.pictureBox5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox5_MouseUp);
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pictureBox4.Location = new System.Drawing.Point(2, 2);
+            this.pictureBox4.BackColor = System.Drawing.SystemColors.InactiveBorder;
+            this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox4.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pictureBox4.Location = new System.Drawing.Point(515, 2);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(41, 41);
-            this.pictureBox4.TabIndex = 7;
+            this.pictureBox4.TabIndex = 6;
             this.pictureBox4.TabStop = false;
+            this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
+            this.pictureBox4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox4_MouseDown);
+            this.pictureBox4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox4_MouseUp);
             // 
             // pictureBox3
             // 
             this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox3.Location = new System.Drawing.Point(1325, 105);
+            this.pictureBox3.Location = new System.Drawing.Point(1325, 86);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(55, 55);
+            this.pictureBox3.Size = new System.Drawing.Size(45, 45);
             this.pictureBox3.TabIndex = 3;
             this.pictureBox3.TabStop = false;
             this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
@@ -4331,9 +4575,9 @@ namespace EnvirInfoSys
             // pictureBox2
             // 
             this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.Location = new System.Drawing.Point(1325, 175);
+            this.pictureBox2.Location = new System.Drawing.Point(1325, 137);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(55, 55);
+            this.pictureBox2.Size = new System.Drawing.Size(45, 45);
             this.pictureBox2.TabIndex = 2;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
@@ -4343,7 +4587,7 @@ namespace EnvirInfoSys
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Location = new System.Drawing.Point(1325, 35);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(55, 55);
+            this.pictureBox1.Size = new System.Drawing.Size(45, 45);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
@@ -4380,6 +4624,7 @@ namespace EnvirInfoSys
             this.mapHelper1.MapTypeChanged += new MapHelper.MapHelper.DlMapTypeChanged(this.mapHelper1_MapTypeChanged);
             this.mapHelper1.MapMouseWheel += new MapHelper.MapHelper.DlMouseWheel(this.mapHelper1_MapMouseWheel);
             this.mapHelper1.MapMouseOver += new MapHelper.MapHelper.DlMapMouseOver(this.mapHelper1_MapMouseOver);
+            this.mapHelper1.DrivenPathReady += new MapHelper.MapHelper.DlDrivenPathReady(this.mapHelper1_DrivenPathReady);
             this.mapHelper1.HasNeighbors += new MapHelper.MapHelper.DlHasNeighbors(this.mapHelper1_HasNeighbors);
             // 
             // groupControl1
@@ -4459,10 +4704,10 @@ namespace EnvirInfoSys
             ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).EndInit();
             this.panelControl3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit2.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
             this.panelControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxEdit1.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
